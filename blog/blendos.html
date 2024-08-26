@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta content="width=device-width, initial-scale=1" charset="utf-8" />
+        <link rel="icon" href="/assets/askiiart.gif" type="image/icon">
+        <title>Checking out blendOS</title>
+        <link href="/style.css" type="text/css" rel="stylesheet" />
+        <link href="/prism.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body class="line-numbers">
+        <h1 id="checking-out-blendos">Checking out blendOS</h1>
+        <p>blendOS is self-described as "Arch Linux, made declarative,
+        immutable and atomic." And yeah, that's a pretty good
+        description of what it is. But you can never <em>really</em>
+        tell what a distro is like without trying it, so...</p>
+        <h2 id="installation">Installation</h2>
+        <p>I decided to just run blendOS in a virtual machine; I had a
+        bunch of data I hadn't backed up yet and was actively working
+        on, and didn't feeling like switching yet given I had no
+        experience with blendOS v4[^1] - I've actually tried blendOS v3
+        before, back when v4 was in alpha, but it had practically zero
+        documentation, not even <code>man</code> pages, so I gave up on
+        it very quickly. But with v4, hopefully it's improved since
+        then.</p>
+        <h2 id="first-use">First use</h2>
+        <p>Upon first boot, blendOS drops you into a pretty standard
+        GNOME session, on account of the <code>/system.yaml</code> file
+        by default:</p>
+        <div class="sourceCode" id="cb1"><pre
+        class="language-yaml"><code class="language-yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">impl</span><span class="kw">:</span><span class="at"> http://github.com/blend-os/tracks/raw/main</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://pkg-repo.blendos.co</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">track</span><span class="kw">:</span><span class="at"> default-gnome</span></span></code></pre></div>
+        <p>At first I wasn't sure what impl is doing, but it seems to be
+        combined with the track to get the URL for the raw
+        <code>yaml</code> file[^1].</p>
+        <p>This is actually a really interesting bit <em>which isn't
+        documented</em>, as it means you can just, say, host your own
+        track(s) for all your computers in a Git repo, and they can each
+        inherit from other configs[^2] or be overridden locally; this
+        actually seems like a very interesting and viable way to
+        centrally manage many computers running Linux, and given I'm
+        constantly switching between several computers; I can just put
+        my config(s) in one repo, and pull from that.</p>
+        <h2 id="configuration">Configuration</h2>
+        <p>It's quite basic, but blendOS actually works very well for
+        me; I already have a Git repo of <a
+        href="https://git.askiiart.net/askiiart/configs">all my
+        configs</a>, which are intended to be run from a clean
+        installation automatically, so for blendOS I just have to put
+        those scripts into the yaml file and adapt it so the packages
+        are listed in the YAML rather than being installed with
+        <code>pacman</code> or <code>yay</code>.</p>
+        <h2 id="problems">Problems</h2>
+        <p>Biggest of all blendOS's problems is how slow it is to
+        rebuild. It doesn't save "layers" of packages like <a
+        href="https://github.com/coreos/rpm-ostree"><code>rpm-ostree</code></a>
+        (as used by Fedora atomic)</p>
+        <h2 id="wishlist">Wishlist</h2>
+        <h2 id="sources">Sources</h2>
+        <ul>
+        <li>[1] <a href="https://blendos.co/">blendOS homepage</a></li>
+        <li>[2] <a
+        href="https://blendos.co/install/post-install/intro/">blendOS
+        post-install intro</a></li>
+        </ul>
+        <h2 id="footnotes">Footnotes</h2>
+        <ul>
+        <li>[^1] That is,
+        <code>http://github.com/blend-os/tracks/raw/main</code> +
+        <code>/</code> + <code>default-gnome</code> +
+        <code>.yaml</code></li>
+        <li>[^2] In the provided <code>blend-os/tracks</code> repo,
+        <code>default-gnome</code> actually inherits from the
+        <code>gnome</code> track.</li>
+        </ul>
+        <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
+        <script src="/prism.js"></script>
+    </body>
+    <footer>
+        <p><a href="https://git.askiiart.net/askiiart/engl-2311-blog">code</a>&emsp;<a href="/feed.xml">RSS</a></p>
+    </footer>
+</html>
