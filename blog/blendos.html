@@ -9,6 +9,10 @@
     </head>
     <body class="line-numbers">
         <h1 id="checking-out-blendos">Checking out blendOS</h1>
+        <hr />
+        <p>WARNING: This page is a work-in-progress, and is very
+        incomplete. Read at your own risk.</p>
+        <hr />
         <p>blendOS is self-described as "Arch Linux, made declarative,
         immutable and atomic." And yeah, that's a pretty good
         description of what it is. But you can never <em>really</em>
@@ -17,7 +21,7 @@
         <p>I decided to just run blendOS in a virtual machine; I had a
         bunch of data I hadn't backed up yet and was actively working
         on, and didn't feeling like switching yet given I had no
-        experience with blendOS v4[^1] - I've actually tried blendOS v3
+        experience with blendOS v4 - I've actually tried blendOS v3
         before, back when v4 was in alpha, but it had practically zero
         documentation, not even <code>man</code> pages, so I gave up on
         it very quickly. But with v4, hopefully it's improved since
@@ -32,16 +36,44 @@
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">track</span><span class="kw">:</span><span class="at"> default-gnome</span></span></code></pre></div>
         <p>At first I wasn't sure what impl is doing, but it seems to be
         combined with the track to get the URL for the raw
-        <code>yaml</code> file[^1].</p>
+        <code>yaml</code> file<a href="#fn1" class="footnote-ref"
+        id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
         <p>This is actually a really interesting bit <em>which isn't
         documented</em>, as it means you can just, say, host your own
         track(s) for all your computers in a Git repo, and they can each
-        inherit from other configs[^2] or be overridden locally; this
-        actually seems like a very interesting and viable way to
-        centrally manage many computers running Linux, and given I'm
-        constantly switching between several computers; I can just put
-        my config(s) in one repo, and pull from that.</p>
+        inherit from other configs<a href="#fn2" class="footnote-ref"
+        id="fnref2" role="doc-noteref"><sup>2</sup></a> or be overridden
+        locally; this actually seems like a very interesting and viable
+        way to centrally manage many computers running Linux, and given
+        I'm constantly switching between several computers; I can just
+        put my config(s) in one repo, and pull from that.</p>
         <h2 id="configuration">Configuration</h2>
+        <p>blendOS's configuration is really simple:</p>
+        <div class="sourceCode" id="cb2"><pre
+        class="language-yaml"><code class="language-yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">impl</span><span class="kw">:</span><span class="at"> http://github.com/blend-os/tracks/raw/main</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://pkg-repo.blendos.co</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">track</span><span class="kw">:</span><span class="at"> default-gnome</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">arch-repo</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;https://repo-goes-here.example&#39;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">packages</span><span class="kw">:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="st">&#39;fish&#39;</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">aur-packages</span><span class="kw">:</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="st">&#39;EVEN-MORE-FISH&#39;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="st">&#39;service-goes-here&#39;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">user-services</span><span class="kw">:</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="st">&#39;user-service-goes-here&#39;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">package-repos</span><span class="kw">:</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;repo name&#39;</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">repo-url</span><span class="kw">:</span><span class="at"> </span><span class="st">&#39;https://repo.url&#39;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">commands</span><span class="kw">:</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="st">&#39;echo hiiiiiii &gt; /home/user/helloooooo&#39;</span></span></code></pre></div>
         <p>It's quite basic, but blendOS actually works very well for
         me; I already have a Git repo of <a
         href="https://git.askiiart.net/askiiart/configs">all my
@@ -64,19 +96,25 @@
         post-install intro</a></li>
         </ul>
         <h2 id="footnotes">Footnotes</h2>
-        <ul>
-        <li>[^1] That is,
+        <aside id="footnotes"
+        class="footnotes footnotes-end-of-document" role="doc-endnotes">
+        <hr />
+        <ol>
+        <li id="fn1"><p>That is,
         <code>http://github.com/blend-os/tracks/raw/main</code> +
         <code>/</code> + <code>default-gnome</code> +
-        <code>.yaml</code></li>
-        <li>[^2] In the provided <code>blend-os/tracks</code> repo,
-        <code>default-gnome</code> actually inherits from the
-        <code>gnome</code> track.</li>
-        </ul>
+        <code>.yaml</code><a href="#fnref1" class="footnote-back"
+        role="doc-backlink">↩︎</a></p></li>
+        <li id="fn2"><p>In the provided <code>blend-os/tracks</code>
+        repo, <code>default-gnome</code> actually inherits from the
+        <code>gnome</code> track.<a href="#fnref2" class="footnote-back"
+        role="doc-backlink">↩︎</a></p></li>
+        </ol>
+        </aside>
         <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
         <script src="/prism.js"></script>
     </body>
     <footer>
-        <p><a href="https://git.askiiart.net/askiiart/engl-2311-blog">code</a>&emsp;<a href="/feed.xml">RSS</a></p>
+        <p><a href="https://git.askiiart.net/askiiart/engl-2311-blog">Source code</a>&ensp;|&ensp;<a href="/feed.xml">RSS</a></p>
     </footer>
 </html>

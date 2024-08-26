@@ -1,10 +1,16 @@
 # Checking out blendOS
 
+---
+
+WARNING: This page is a work-in-progress, and is very incomplete. Read at your own risk.
+
+---
+
 blendOS is self-described as "Arch Linux, made declarative, immutable and atomic." And yeah, that's a pretty good description of what it is. But you can never *really* tell what a distro is like without trying it, so...
 
 ## Installation
 
-I decided to just run blendOS in a virtual machine; I had a bunch of data I hadn't backed up yet and was actively working on, and didn't feeling like switching yet given I had no experience with blendOS v4[^1] - I've actually tried blendOS v3 before, back when v4 was in alpha, but it had practically zero documentation, not even `man` pages, so I gave up on it very quickly. But with v4, hopefully it's improved since then.
+I decided to just run blendOS in a virtual machine; I had a bunch of data I hadn't backed up yet and was actively working on, and didn't feeling like switching yet given I had no experience with blendOS v4 - I've actually tried blendOS v3 before, back when v4 was in alpha, but it had practically zero documentation, not even `man` pages, so I gave up on it very quickly. But with v4, hopefully it's improved since then.
 
 ## First use
 
@@ -66,5 +72,5 @@ Biggest of all blendOS's problems is how slow it is to rebuild. It doesn't save 
 
 ## Footnotes
 
-- [^1] That is, `http://github.com/blend-os/tracks/raw/main` + `/` + `default-gnome` + `.yaml`
-- [^2] In the provided `blend-os/tracks` repo, `default-gnome` actually inherits from the `gnome` track.
+[^1]: That is, `http://github.com/blend-os/tracks/raw/main` + `/` + `default-gnome` + `.yaml`
+[^2]: In the provided `blend-os/tracks` repo, `default-gnome` actually inherits from the `gnome` track.
