@@ -2,6 +2,8 @@
 import re
 import sys
 
+# TODO: rewrite in bash
+
 # add title attribute to img tags
 filename = sys.argv[1]
 with open(filename, 'r+') as f:
