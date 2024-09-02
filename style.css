@@ -42,6 +42,14 @@ footer {
     font: 18px/1.35 'Atkinson Hyperlegible', sans-serif;
 }
 
+figcaption {
+    font: 14px/1.35 'Atkinson Hyperlegible', sans-serif;
+}
+
+small {
+    font: 14px/1.35 'Atkinson Hyperlegible', sans-serif;
+}
+
 a:link,
 a:visited {
     color: #80c47b;
@@ -105,4 +113,8 @@ blockquote {
     border-left: 3px solid #59997a;
     padding-left: 1em;
     margin-left: 0.5;
+}
+
+img {
+    max-width: 90vw;
 }

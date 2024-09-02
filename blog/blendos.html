@@ -9,10 +9,6 @@
     </head>
     <body class="line-numbers">
         <h1 id="checking-out-blendos">Checking out blendOS</h1>
-        <hr />
-        <p>WARNING: This page is a work-in-progress, and is very
-        incomplete. Read at your own risk.</p>
-        <hr />
         <p>blendOS is self-described as "Arch Linux, made declarative,
         immutable and atomic." And yeah, that's a pretty good
         description of what it is. But you can never <em>really</em>
@@ -26,27 +22,42 @@
         documentation, not even <code>man</code> pages, so I gave up on
         it very quickly. But with v4, hopefully it's improved since
         then.</p>
+        <p>Installation itself was simple: it's got a basic installer,
+        which notably allows for manual partitioning, but does
+        <em>not</em> allow for selecting which track to use (which we'll
+        get to later), though to be fair, that's <em>very</em> simple to
+        change post-installation.</p>
+        <img src="/assets/blendos/1.png"
+        title="blendOS live image boot: a basic GNOME desktop with a vertical white window in the center; it has the blendOS logo and a &quot;Start&quot; button, with the text &quot;Welcome to blendOS&quot;, &quot;Press Start to start installing blendOS!&quot;" alt="blendOS live image boot: a basic GNOME desktop with a vertical white window in the center; it has the blendOS logo and a &quot;Start&quot; button, with the text &quot;Welcome to blendOS&quot;, &quot;Press Start to start installing blendOS!&quot;" />
         <h2 id="first-use">First use</h2>
         <p>Upon first boot, blendOS drops you into a pretty standard
-        GNOME session, on account of the <code>/system.yaml</code> file
-        by default:</p>
+        GNOME session with a graphical setup to add a user account, set
+        timezone, and all that.</p>
+        <p>Here's the default <code>/system.yaml</code> file
+        provided:</p>
         <div class="sourceCode" id="cb1"><pre
         class="language-yaml"><code class="language-yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">impl</span><span class="kw">:</span><span class="at"> http://github.com/blend-os/tracks/raw/main</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">repo</span><span class="kw">:</span><span class="at"> https://pkg-repo.blendos.co</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">track</span><span class="kw">:</span><span class="at"> default-gnome</span></span></code></pre></div>
-        <p>At first I wasn't sure what impl is doing, but it seems to be
-        combined with the track to get the URL for the raw
-        <code>yaml</code> file<a href="#fn1" class="footnote-ref"
-        id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
-        <p>This is actually a really interesting bit <em>which isn't
-        documented</em>, as it means you can just, say, host your own
-        track(s) for all your computers in a Git repo, and they can each
-        inherit from other configs<a href="#fn2" class="footnote-ref"
-        id="fnref2" role="doc-noteref"><sup>2</sup></a> or be overridden
-        locally; this actually seems like a very interesting and viable
-        way to centrally manage many computers running Linux, and given
-        I'm constantly switching between several computers; I can just
-        put my config(s) in one repo, and pull from that.</p>
+        <p>At first I wasn't sure what impl is doing, but according to
+        the <a
+        href="https://blendos.co/reference/configs/system/"><code>system.yaml</code>
+        docs</a> seems to be combined with the track to get the URL for
+        the raw <code>yaml</code> file.<a href="#fn1"
+        class="footnote-ref" id="fnref1"
+        role="doc-noteref"><sup>1</sup></a></p>
+        <p>This is actually a really interesting bit, as it means you
+        can just, say, host your own track(s) for all your computers in
+        a Git repo, and they can each inherit from other configs<a
+        href="#fn2" class="footnote-ref" id="fnref2"
+        role="doc-noteref"><sup>2</sup></a> or be overridden locally;
+        this actually seems like a very interesting and viable way to
+        centrally manage many computers running Linux, and given I'm
+        constantly switching between several computers; I can just put
+        my config(s) in one repo, and pull from that.</p>
+        <p>(details on this at <a
+        href="https://blendos.co/reference/configs/system/"><code>system.yaml</code>
+        docs</a> -&gt; Creating a track repo/webserver)</p>
         <h2 id="configuration">Configuration</h2>
         <p>blendOS's configuration is really simple:</p>
         <div class="sourceCode" id="cb2"><pre
@@ -74,28 +85,89 @@
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="fu">commands</span><span class="kw">:</span></span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="st">&#39;echo hiiiiiii &gt; /home/user/helloooooo&#39;</span></span></code></pre></div>
-        <p>It's quite basic, but blendOS actually works very well for
-        me; I already have a Git repo of <a
+        <p>(from <a
+        href="https://blendos.co/reference/configs/system/"><code>system.yaml</code>
+        docs</a>)</p>
+        <p>It's quite basic, but blendOS's design actually works very
+        well for me; I already have a Git repo of <a
         href="https://git.askiiart.net/askiiart/configs">all my
         configs</a>, which are intended to be run from a clean
         installation automatically, so for blendOS I just have to put
         those scripts into the yaml file and adapt it so the packages
         are listed in the YAML rather than being installed with
-        <code>pacman</code> or <code>yay</code>.</p>
+        <code>pacman</code>, <code>paru</code> or the like (at least,
+        not directly, via <code>akshara</code> instead)</p>
         <h2 id="problems">Problems</h2>
-        <p>Biggest of all blendOS's problems is how slow it is to
-        rebuild. It doesn't save "layers" of packages like <a
-        href="https://github.com/coreos/rpm-ostree"><code>rpm-ostree</code></a>
-        (as used by Fedora atomic)</p>
+        <p><em>By far</em>, the biggest of all blendOS's problems is how
+        slow it is to rebuild. It doesn't save "layers" like <a
+        href="https://coreos.github.io/rpm-ostree/"><code>rpm-ostree</code></a>
+        (as used by Fedora atomic); instead, it just completely rebuilds
+        the system every single time. Because of this, it takes a long
+        time to run the updater/rebuilder, even to just install one more
+        package.<a href="#fn3" class="footnote-ref" id="fnref3"
+        role="doc-noteref"><sup>3</sup></a></p>
+        <p>Besides that, my only complaints are:</p>
+        <ol type="1">
+        <li>The <code>akshara</code>'s (the update/rebuild tool) major
+        issue with reinheritance (see <a
+        href="https://blendos.co/reference/configs/system/"><code>system.yaml</code>
+        docs</a> -&gt; Inheritance).</li>
+        <li>Its community and issue tracking is primarily on Discord,
+        which is then indexed by Answer Overflow so it's searchable with
+        Google and the like; there's no dedicated developer space (only
+        one issue on <a href="https://git.blendos.co/blendOS">their
+        GitLab</a>, where <code>akshara</code> is hosted.) However,
+        given you must be pretty competent with Linux to be using
+        blendOS in the first place, and how small the dev team and
+        community is, this isn't much of an issue.</li>
+        <li>There's a lack of documentation for some bits, though the
+        docs are updated and getting new additions constantly.</li>
+        </ol>
+        <p>I've encountered more bugs and missing features since then,
+        but I'll talk about that in my next post, as they'll fit better
+        there.</p>
         <h2 id="wishlist">Wishlist</h2>
-        <h2 id="sources">Sources</h2>
+        <p>This is some other stuff I want, not necessarily problems,
+        but things I'd like added</p>
         <ul>
-        <li>[1] <a href="https://blendos.co/">blendOS homepage</a></li>
-        <li>[2] <a
-        href="https://blendos.co/install/post-install/intro/">blendOS
-        post-install intro</a></li>
+        <li>I'd like an equivalent of this at the user level specifying
+        packages, repos, and commands for other (containerized)
+        distros.</li>
+        <li>I'd like to be able to automatically install blendOS - to be
+        able to script it rather than going through the GUI. Just a
+        tarball of the installed system would be great.</li>
         </ul>
+        <h2 id="sources">Sources</h2>
+        <p>Sources are linked as they're used throughout, and also
+        listed separately here.</p>
+        <!-- Link definition are above, separate (rendered) links below -->
+        <ol type="1">
+        <li><a href="https://blendos.co/">blendOS Homepage</a></li>
+        <li><a
+        href="https://blendos.co/install/post-install/intro/">Introduction
+        to blendOS</a></li>
+        <li><a href="https://blendos.co/reference/">blendOS
+        reference</a></li>
+        <li><a
+        href="https://blendos.co/reference/configs/system/"><code>system.yaml</code>
+        docs</a></li>
+        <li><a href="https://git.blendos.co/blendOS">blendOS
+        GitLab</a></li>
+        <li><a
+        href="https://coreos.github.io/rpm-ostree/"><code>rpm-ostree</code>
+        docs</a></li>
+        <li><a
+        href="https://blendos.co/contributing/#git-structure">blendOS's
+        Git structure</a></li>
+        </ol>
+        <p>Note: As I write this, the docs, particularly the <a
+        href="https://blendos.co/reference/">blendOS reference</a>, are
+        being constantly revised. During the process of writing this, an
+        entire new section has been added, though this post doesn't
+        touch on that and said section is unused here - it'll come into
+        play in the next post.</p>
         <h2 id="footnotes">Footnotes</h2>
+        <!-- Note if you're viewing the Markdown version: [^1] is for footnotes; that's the formatting used by Pandoc, but VS Code, for example, doesn't support it. -->
         <aside id="footnotes"
         class="footnotes footnotes-end-of-document" role="doc-endnotes">
         <hr />
@@ -103,11 +175,24 @@
         <li id="fn1"><p>That is,
         <code>http://github.com/blend-os/tracks/raw/main</code> +
         <code>/</code> + <code>default-gnome</code> +
-        <code>.yaml</code><a href="#fnref1" class="footnote-back"
+        <code>.yaml</code>; also, I probably should've just... read the
+        documentation from the start, instead of figuring this out on my
+        own and only later checking the docs.<a href="#fnref1"
+        class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+        <li id="fn2"><p>For example, in the provided
+        <code>blend-os/tracks</code> repo, <code>default-gnome</code>
+        actually inherits from the <code>gnome</code> track.<a
+        href="#fnref2" class="footnote-back"
         role="doc-backlink">↩︎</a></p></li>
-        <li id="fn2"><p>In the provided <code>blend-os/tracks</code>
-        repo, <code>default-gnome</code> actually inherits from the
-        <code>gnome</code> track.<a href="#fnref2" class="footnote-back"
+        <li id="fn3"><p>In the meantime while I've been writing this, a
+        community member has implemented <a
+        href="https://aur.archlinux.org">AUR</a> package caching, which
+        can definitely cut down on the build time by a lot, depending on
+        how many packages you're using from the AUR. However, this
+        hasn't been added to the upstream version of Akshara yet, though
+        through no fault of the blendOS team; as far as I know, the dev
+        who implemented it just hasn't sent it over to be added yet.<a
+        href="#fnref3" class="footnote-back"
         role="doc-backlink">↩︎</a></p></li>
         </ol>
         </aside>
@@ -116,5 +201,6 @@
     </body>
     <footer>
         <p><a href="https://git.askiiart.net/askiiart/engl-2311-blog">Source code</a>&ensp;|&ensp;<a href="/feed.xml">RSS</a></p>
+        <small>Image captions are the same as the alt text; assuming you're sighted, you can most likely ignore them.</small>
     </footer>
 </html>
