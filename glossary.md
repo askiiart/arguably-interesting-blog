@@ -1,0 +1,27 @@
+# Glossary
+
+- Linux: An open-source family of operating systems
+  - Linux distro (distribution): One of the operating systems in the Linux family (i.e. using the Linux kernel)
+- OCI: Open Container Initiative; a project for open-source standardization of containers
+- Containers: An isolated environment to run programs, great for avoiding conflicting dependencies and for ease-of-use
+- Container image: The base filesystem of a container
+  - OCI image: The OCI's standard for container images, used by essentially all Linux container platforms
+- AUR: Arch User Repository, a repository for Arch Linux packages which are maintained by users. AUR only hosts computer-readable instructions and related files (via `PKGBUILD` files) for creating the packages, not the packages or programs themselves
+- Filesystem: The system which keeps track of how data is written to disk, like NTFS, FAT32, or ext4. Some filesystems, like ZFS or btrfs, have extra features like redundancy or compression.![alt text](image.png)
+- Git: The most common version control system by far - keeps track of different versions of files, can be used to resolve conflicting changes, etc.
+  - Forking: Copying a Git repository and adding your own stuff to it. Can be simply to contribute the changes back to the upstream project later, or to use something as a base for your own project.
+- Repository: Usually refers to either a Git repository (i.e. a Git project), or a server hosting packages to be installed by a package manager.
+- GUI toolkit: A set of programs used for making graphical interfaces
+  - Qt: A GUI toolkit with an appearance similar to normal Windows interfaces; pronounced "cute"
+  - GTK: A more (literally) rounded GUI toolkit, hated by some for its programs usually having highly excessive whitespace and poor design (though there are some exceptions)
+- Window manager: The program which keeps track of and determines where each program's window(s) go.
+- Desktop Environment: A window manager, programs, and configurations, all wrapped up into a bundle, providing a comprehensive desktop.
+  - GNOME: A popular GTK-based extensible desktop environment.
+- Virtual machine: A virtual computer.
+- Partition: A part of a disk. For example, modern computers have a small boot partition and a big partition holding all the actual data.
+- GParted: GNOME's partition manager - and my favorite partition manager.
+- `sudo`: Super user do; runs a command as `root`, Linux's admin account.
+- Tarball: An archive of data, preserving its file and directory structure. Not compressed, though its tools come with options to compress it after generation.
+- `apt`: The package manager for Debian-based Linux distros.
+- blendOS: "Arch Linux, made declarative, immutable and atomic."
+  - Akshara: blendOS's system rebuilder

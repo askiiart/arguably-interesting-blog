@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta content="width=device-width, initial-scale=1" charset="utf-8" />
+        <link rel="icon" href="/assets/askiiart.gif" type="image/icon">
+        <title>OCI Images as a "Filesystem": Vanilla OS</title>
+        <link href="/style.css" type="text/css" rel="stylesheet" />
+        <link href="/prism.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body class="line-numbers">
+        <h1 id="oci-images-as-a-filesystem-vanilla-os">OCI Images as a
+        "Filesystem": Vanilla OS</h1>
+        <p>In looking for a layered solution to blendOS's issues, I
+        found that the lead maintainer and creator of blendOS was
+        looking into using OCI images, and has even forked a repo from
+        Vanilla OS. So I'm trying out Vanilla OS's usage of OCI images
+        (which are inherently layered) to see about implementing a
+        similar system in blendOS.</p>
+        <h2 id="installation">Installation</h2>
+        <p>Installation is pretty simple, you're again dropped into a
+        simple GNOME session with a GTK installer:</p>
+        <img src="/assets/vanilla-os/1.png"
+        title="A basic GNOME session with a white GTK-based installer; it&#39;s showing the date and time/time zone selector." alt="A basic GNOME session with a white GTK-based installer; it&#39;s showing the date and time/time zone selector." />
+        <p>The process was very similar to blendOS's, though it also
+        detects virtual machines and offers an option to install tools
+        (e.g. clipboard sharing, video drivers) to help with that.</p>
+        <p>Another notable bit is that it requires more space than
+        blendOS, with a minimum disk size of 50 GB, but given its A/B
+        slot architecture (which I'll get to later), this makes
+        sense.</p>
+        <h2 id="first-boot">First boot</h2>
+        <p>On first boot, there's a very similar setup tool, surely
+        based off the installer. It makes you put in your language,
+        timezone, etc. again, which I was a bit annoyed by, but it's no
+        big deal. Then it has you create your login, select what you
+        want installed (from basic programs like a calendar, office
+        suite, etc.), then restarts and does all that.</p>
+        <img src="/assets/vanilla-os/2.png"
+        title="A similar wizard to the installer; it has the Vanilla OS logo and says &quot;Welcome&quot;, &quot;Make your choices, this wizard will take care of everything&quot;" alt="A similar wizard to the installer; it has the Vanilla OS logo and says &quot;Welcome&quot;, &quot;Make your choices, this wizard will take care of everything&quot;" />
+        <p>Then you just get a little slideshow detailing automatic
+        updates, its Apx package manager, and other basics, nothing
+        interesting, and nothing I care about.</p>
+        <h2 id="usage-and-configuration">Usage and configuration</h2>
+        <p>I tried checking the docs (<em>Vanilla OS Docs</em>), which
+        by themselves were difficult to find. They're a bit hidden in
+        "Help" despite being <em>absolutely essential</em> to using this
+        distro[^1]. But what I found easily was screenshots of
+        Overwatch. (<em>Vanilla OS</em>)</p>
+        <p>Regardless, once I found the docs, I tried to figure out how
+        it worked, and I was still very confused. After looking over it
+        again, I decided to check Apx's docs, its package manager, and
+        found how to install packages, of course. (<em>Vanilla OS
+        Docs</em>) I tried to install GParted; after it not running at
+        first due to Vanilla OS not being configured correctly and not
+        showing a password prompt for it, causing GParted to exit, I ran
+        it in the terminal with <code>sudo</code>, just to get a
+        permission denied error. That's because all packages are
+        installed in containers, there is no system package manager...
+        kinda.</p>
+        <h3 id="abroot">ABRoot</h3>
+        <p>ABRoot is the magic behind Vanilla OS's OCI image backend. As
+        far as I can tell (again, I don't believe there are no relevant
+        for docs for this) it essentially generates a tarball of the
+        relevant data for the new iteration, then symlinks to either
+        that or the current iteration on boot, depending on what the
+        user selects. It provides essentially no advantages over
+        blendOS's approach, and is, in my opinion, massively
+        overcomplicated. (<em>GitHub: Vanilla-os/abroot</em>)</p>
+        <p>It also acts as a package manager of sorts - it's the only
+        way to install packages system-wide on Vanilla OS, and it does
+        this by running <code>apt</code> when the new image is built,
+        similar to Akshara.</p>
+        <p>ABRoot's config file is at
+        <code>/etc/abroot/abroot.json</code>, but it doesn't support
+        declarative system-wide packages. Instead, run the
+        following:</p>
+        <div class="sourceCode" id="cb1"><pre
+        class="language-bash"><code class="language-bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">abroot</span> pkg add <span class="va">$PACKAGE_NAME</span></span></code></pre></div>
+        <p>(<em>Install additional drivers and libraries in Vanilla
+        OS</em>)</p>
+        <h2 id="conclusion">Conclusion</h2>
+        <p>Vanilla OS wasn't very helpful as to OCI-based layers, but I
+        don't think it was a complete waste of time. Vanilla OS gave me
+        some ideas, and I like its backend's ideas; it will most likely
+        serve as inspiration for when I add layers to blendOS. Plus, my
+        idea would have an advantage: compression.</p>
+        <p>But I'll get into it later, once it's a bit more fleshed out;
+        plus, that's not the point of this post anyways.</p>
+        <p>P.S. I can't get it across while keeping this post decent
+        quality and on-topic, but I need to emphasize how confusing the
+        docs were for Vanilla OS. It feels like they try to appeal to
+        users with basic tech literacy while not explaining how it
+        actually works or what anything does. They write how-to guides,
+        not documentation.</p>
+        <h2 id="footnotes">Footnotes</h2>
+        <p>[^1] Below the big download button, there's a link to the
+        installation guide, but this provides nothing helpful, it just
+        guides you through the already extremely simple
+        installation.</p>
+        <h2 id="sources">Sources</h2>
+        <p>“Install Additional Drivers and Libraries in Vanilla OS.”
+        <em>Vanilla OS Docs</em>, Vanilla OS, <a
+        href="https://docs.vanillaos.org/handbook/en/install-additional-drivers">docs.vanillaos.org/handbook/en/install-additional-drivers</a>.
+        Accessed 19 Sept. 2024.<br />
+        “Vanilla OS Docs.” <em>Vanilla OS</em>, Vanilla OS, <a
+        href="https://docs.vanillaos.org/collections/docs">docs.vanillaos.org/collections/docs</a>.
+        Accessed 19 Sept. 2024.<br />
+        <em>Vanilla OS</em>, <a
+        href="https://vanillaos.org">vanillaos.org</a>. Accessed 19
+        Sept. 2024.<br />
+        Vanilla-OS. “GitHub: Vanilla-Os/Abroot.” <em>GitHub</em>, <a
+        href="github.com/Vanilla-OS/ABRoot">github.com/Vanilla-OS/ABRoot</a>.
+        Accessed 19 Sept. 2024.</p>
+        <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
+        <script src="/prism.js"></script>
+    </body>
+    <footer>
+        <p><a href="https://git.askiiart.net/askiiart/engl-2311-blog">Source code</a>&ensp;|&ensp;<a href="/feed.xml">RSS</a>&ensp;|&ensp;<a href="/glossary.html">Glossary</a></p>
+        <small>Image captions are the same as the alt text; assuming you're sighted, you can most likely ignore them.</small>
+    </footer>
+</html>
