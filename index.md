@@ -5,3 +5,4 @@ This is a site! Doing... stuff with computers. Interesting and sometimes funny s
 ## Pages
 
 - [Checking out blendOS](/blog/blendos.html)
+- [OCI Images as a "Filesystem": Vanilla OS](/blog/vanilla-os.html)
