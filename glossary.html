@@ -36,10 +36,14 @@
         track of different versions of files, can be used to resolve
         conflicting changes, etc.
         <ul>
-        <li>Forking: Copying a Git repository and adding your own stuff
-        to it. Can be simply to contribute the changes back to the
-        upstream project later, or to use something as a base for your
-        own project.</li>
+        <li>Forking: Copying a Git repository and optionally and making
+        changes to it. Can be simply to contribute the changes back to
+        the upstream project later, or to use something as a base for
+        your own project.</li>
+        <li>Branches: Different "chains" of versions of code, which can,
+        well, branch apart, merge back together, and so on. Different
+        branches don't necessarily have to be related whatsoever, but
+        they usually are made from other branches.</li>
         </ul></li>
         <li>Repository: Usually refers to either a Git repository (i.e.
         a Git project), or a server hosting packages to be installed by
@@ -78,8 +82,15 @@
         <li>blendOS: "Arch Linux, made declarative, immutable and
         atomic."
         <ul>
-        <li>Akshara: blendOS's system rebuilder</li>
+        <li>Akshara: blendOS's system rebuilder/updater</li>
         </ul></li>
+        <li><code>pacman</code>: Arch Linux's package manager, also used
+        by blendOS</li>
+        <li><code>PKGBUILD</code>: A file defining how to build a
+        package which can be install by <code>pacman</code>.</li>
+        <li><code>iso</code> file: A disk image file, can be "burned" to
+        a USB flash drive (or any other disk) and booted off of, often
+        used for Linux installers and/or live images.</li>
         </ul>
         <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
         <script src="/prism.js"></script>

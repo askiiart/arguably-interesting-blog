@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta content="width=device-width, initial-scale=1" charset="utf-8" />
+        <title>Building blendOS (and its packages)</title>
+        <link href="/style.css" type="text/css" rel="stylesheet" />
+        <link href="/prism.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body class="line-numbers">
+        <h1 id="building-blendos-and-its-packages">Building blendOS (and
+        its packages)</h1>
+        <p>This one was pretty simple. First off, I just made <a
+        href="https://git.askiiart.net/askiiart-blendos">an organization
+        to hold all my blendOS code</a> on my Forgejo instance just to
+        keep it organized. Then I just cloned all the relevant
+        repositories from upstream (<em>blendOS · GitLab</em>), added my
+        own code with some minor fixes and stuff, then pushed the
+        updated code to my server.</p>
+        <p>After that, it was just a matter of adding the actual
+        packaging for the code. For the packages that were required for
+        building the blendOS <code>iso</code> file, if I didn't have my
+        own repository for them already, I just made a new branch,
+        updated the packaging, and pushed the packaging to that
+        branch.</p>
+        <p>Looking at the <a
+        href="https://git.blendos.co/blendOS/image-builder/-/blob/main/packages.x86_64?ref_type=heads">package
+        list</a> from <code>image-builder</code> (<em>blendOS /
+        image-builder · GitLab</em>), it seems the only blendOS-specific
+        packages it uses are:</p>
+        <div class="sourceCode" id="cb1"><pre
+        class="language-txt"><code class="language-default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>filesystem-blend</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>blend-inst-git</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>jade-gui</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>blend-git</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>blend-settings-git</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>blend-web-store-git</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>akshara-git</span></code></pre></div>
+        <p>At first, after a bit of minor troubleshooting, I got this
+        all set up and working, pretty simple.</p>
+        <h2 id="oops-it-didnt-work-actually">Oops it didn't work
+        actually</h2>
+        <p>I then realized that my <code>iso</code> file worked, but was
+        not using my repo, and I had even forgotten to even add some of
+        the packages.</p>
+        <p>Turns out I had added my repo to the container's
+        <code>pacman</code> configuration, but not to the
+        <code>pacman</code> config for <code>archiso</code>, the tool
+        used to generate the <code>iso</code> file, or the actual
+        resulting <code>iso</code> image's <code>pacman</code> config
+        either. So while I would have been able to install anything from
+        my repo in the container, the repo was unused by
+        <code>archiso</code>.</p>
+        <p>I just added the missing packages needed to build the
+        <code>iso</code> file, plus all the others on blendOS's GitLab,
+        and rebuilt it. After a bit of troublshooting (nothing
+        interesting, just incompetency, wrong perms, stuff like that), I
+        got it working perfectly.</p>
+        <h2 id="topology-of-my-blendos-repo">Topology of my blendOS
+        repo</h2>
+        <div class="sourceCode" id="cb2"><pre
+        class="language-txt"><code class="language-default"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>        |-----------------|</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>        |                 |</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        | package builder |</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        |                 |</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        |-----------------|</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                 |</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>                 |</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                 ↓</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      |-----------------------------|</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      |          ↓                  |</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>      |    |----------|             |</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>      |    | packages |             |</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      |    |----------|             |</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      |                             |</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      | Arch/blendOS                |</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      | repository                  |</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      |                             |</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>      |           |-----------|     |</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>      |           | blendOS   |     |</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>      |           | iso files |←---←|←---←</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>      |           |-----------|     |    |</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>      |                             |    |</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>      |-----------------------------|    |</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>             |                           |</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>             |                           |</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>             |                           |</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>             ↓                           |</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    |-------------------------|          |</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    |                         |          |</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    | Arch/blendOS            |          |</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    | clients                 |          |</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    |                         |          |</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    |   |--------------|      |          |</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    |   | blendOS iso  |-----→|→---------↑</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    |   |   builder    |      |</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    |   |--------------|      |</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    |                         |</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    |-------------------------|</span></code></pre></div>
+        <h2 id="citations">Citations</h2>
+        <p> Saraswat, Rudra, et al. “blendOS · GitLab.” <em>GitLab</em>,
+        <a
+        href="https://git.blendos.co/blendOS">git.blendos.co/blendOS</a>.
+        Accessed 2 Oct. 2024.<br />
+         Saraswat, Rudra, and Asterisk. “blendOS / image-builder ·
+        GitLab.” <em>GitLab</em>, git.blendos.co/blendOS/image-builder.
+        Accessed 3 Oct. 2024.<br />
+        </p>
+        <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
+        <script src="/prism.js"></script>
+    </body>
+    <footer>
+        <p><a href="https://git.askiiart.net/askiiart/engl-2311-blog">Source code</a>&ensp;|&ensp;<a href="/feed.xml">RSS</a>&ensp;|&ensp;<a href="/glossary.html">Glossary</a></p>
+        <small>Image captions are the same as the alt text; assuming you're sighted, you can most likely ignore them.</small>
+    </footer>
+</html>

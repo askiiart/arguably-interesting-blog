@@ -5,7 +5,7 @@
   <title>eng.askiiart.net</title>
   <description>This is the feed for engl.askiiart.net, I guess</description>
   <link>https://askiiart.net</link>
-  <lastBuildDate>Thu, 19 Sep 2024 15:42:25 +0000</lastBuildDate>
+  <lastBuildDate>Thu, 03 Oct 2024 15:46:35 +0000</lastBuildDate>
   <item>
     <title>Glossary</title>
     <link>https://engl.askiiart.net/glossary.html</link>
@@ -13,6 +13,10 @@
   <item>
     <title>OCI Images as a "Filesystem": Vanilla OS</title>
     <link>https://engl.askiiart.net/blog/vanilla-os.html</link>
+  </item>
+  <item>
+    <title>Building blendOS (and its packages)</title>
+    <link>https://engl.askiiart.net/blog/building-blendos.html</link>
   </item>
   <item>
     <title>Checking out blendOS</title>

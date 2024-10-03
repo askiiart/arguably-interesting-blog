@@ -9,7 +9,8 @@
 - AUR: Arch User Repository, a repository for Arch Linux packages which are maintained by users. AUR only hosts computer-readable instructions and related files (via `PKGBUILD` files) for creating the packages, not the packages or programs themselves
 - Filesystem: The system which keeps track of how data is written to disk, like NTFS, FAT32, or ext4. Some filesystems, like ZFS or btrfs, have extra features like redundancy or compression.![alt text](image.png)
 - Git: The most common version control system by far - keeps track of different versions of files, can be used to resolve conflicting changes, etc.
-  - Forking: Copying a Git repository and adding your own stuff to it. Can be simply to contribute the changes back to the upstream project later, or to use something as a base for your own project.
+  - Forking: Copying a Git repository and optionally and making changes to it. Can be simply to contribute the changes back to the upstream project later, or to use something as a base for your own project.
+  - Branches: Different "chains" of versions of code, which can, well, branch apart, merge back together, and so on. Different branches don't necessarily have to be related whatsoever, but they usually are made from other branches.
 - Repository: Usually refers to either a Git repository (i.e. a Git project), or a server hosting packages to be installed by a package manager.
 - GUI toolkit: A set of programs used for making graphical interfaces
   - Qt: A GUI toolkit with an appearance similar to normal Windows interfaces; pronounced "cute"
@@ -24,4 +25,7 @@
 - Tarball: An archive of data, preserving its file and directory structure. Not compressed, though its tools come with options to compress it after generation.
 - `apt`: The package manager for Debian-based Linux distros.
 - blendOS: "Arch Linux, made declarative, immutable and atomic."
-  - Akshara: blendOS's system rebuilder
+  - Akshara: blendOS's system rebuilder/updater
+- `pacman`: Arch Linux's package manager, also used by blendOS
+- `PKGBUILD`: A file defining how to build a package which can be install by `pacman`.
+- `iso` file: A disk image file, can be "burned" to a USB flash drive (or any other disk) and booted off of, often used for Linux installers and/or live images.
