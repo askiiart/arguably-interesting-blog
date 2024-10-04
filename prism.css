@@ -5,7 +5,7 @@ pre[class*=language-] {
     color: #f8f8f2;
     background: #0e0f0f;
     text-shadow: 0 1px rgba(0, 0, 0, .3);
-    font-family: 'FiraCode', 'Nimbus Mono PS', 'Liberation Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', 'Lucida Console', monospace;
+    font-family: 'FiraCode Nerd Font', 'FiraCode', 'Nimbus Mono PS', 'Liberation Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', 'Lucida Console', monospace;
     font-size: 0.95em;
     text-align: left;
     white-space: pre;
@@ -126,11 +126,12 @@ pre[class*=language-].line-numbers>code {
     white-space: inherit
 }
 
+/* this font-size is just a terrible approximation buuuut it works unless you get really really long code blocks */
 .line-numbers .line-numbers-rows {
     position: absolute;
     pointer-events: none;
     top: 0;
-    font-size: 100%;
+    font-size: 105.34%;
     left: -3.8em;
     width: 3em;
     letter-spacing: -1px;
