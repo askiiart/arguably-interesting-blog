@@ -5,22 +5,26 @@
   <title>eng.askiiart.net</title>
   <description>This is the feed for engl.askiiart.net, I guess</description>
   <link>https://askiiart.net</link>
-  <lastBuildDate>Thu, 03 Oct 2024 15:46:35 +0000</lastBuildDate>
+  <lastBuildDate>Fri, 04 Oct 2024 00:34:32 +0000</lastBuildDate>
   <item>
-    <title>Glossary</title>
-    <link>https://engl.askiiart.net/glossary.html</link>
-  </item>
-  <item>
-    <title>OCI Images as a "Filesystem": Vanilla OS</title>
-    <link>https://engl.askiiart.net/blog/vanilla-os.html</link>
+    <title>Checking out blendOS</title>
+    <link>https://engl.askiiart.net/blog/blendos.html</link>
   </item>
   <item>
     <title>Building blendOS (and its packages)</title>
     <link>https://engl.askiiart.net/blog/building-blendos.html</link>
   </item>
   <item>
-    <title>Checking out blendOS</title>
-    <link>https://engl.askiiart.net/blog/blendos.html</link>
+    <title>OCI Images as a "Filesystem": Vanilla OS</title>
+    <link>https://engl.askiiart.net/blog/vanilla-os.html</link>
+  </item>
+  <item>
+    <title>Glossary</title>
+    <link>https://engl.askiiart.net/glossary.html</link>
+  </item>
+  <item>
+    <title>Placeholder</title>
+    <link>https://engl.askiiart.net/about.html</link>
   </item>
 
 </channel>
