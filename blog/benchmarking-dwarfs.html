@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta content="width=device-width, initial-scale=1" charset="utf-8" />
+        <title>Benchmarking and comparing DwarFS</title>
+        <link href="/style.css" type="text/css" rel="stylesheet" />
+        <link href="/prism.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body class="line-numbers">
+        <h1 id="benchmarking-and-comparing-dwarfs">Benchmarking and
+        comparing DwarFS</h1>
+        <p>DwarFS is a filesystem developed by the user mhx on GitHub
+        [1], which is self-described as "A fast high compression
+        read-only file system for Linux, Windows, and macOS." One of my
+        ideas for blendOS was to layer different packages, and combined
+        with its compression and option to be mounted as a FUSE-based
+        filesystem, it's an appealing option for this use case - blendOS
+        is immutable, so it might as well have some compression.</p>
+        <h2 id="methodology">Methodology</h2>
+        <p>The datasets being used for this test will be the
+        following:</p>
+        <ul>
+        <li>25 GB of null data (just <code>000000000000</code> in
+        binary)</li>
+        <li>25 GB of random data<a href="#fn1" class="footnote-ref"
+        id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+        <li>Data for a 100 million-sided regular polygon; ~29 GB<a
+        href="#fn2" class="footnote-ref" id="fnref2"
+        role="doc-noteref"><sup>2</sup></a></li>
+        <li>The current Linux longterm release source (<a
+        href="https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.58.tar.xz">6.6.58</a>
+        [2]); ~1.5 GB</li>
+        <li>For some rough latency testing:
+        <ul>
+        <li>1000 4 kilobyte files filled with null data (again, just
+        <code>0000000</code> in binary)</li>
+        <li>1000 4 kilobyte files filled with random data</li>
+        </ul></li>
+        </ul>
+        <p>All this data should cover both latency and read speed
+        testing for data that compresses differently - extremely
+        compressible files with null data, decently compressible files,
+        and random data which can't be compressed well.</p>
+        <h2 id="sources">Sources</h2>
+        <ol type="1">
+        <li><a href="https://github.com/mhx/dwarfs"
+        class="uri">https://github.com/mhx/dwarfs</a></li>
+        <li><a href="https://www.kernel.org/"
+        class="uri">https://www.kernel.org/</a></li>
+        </ol>
+        <h2 id="footnotes">Footnotes</h2>
+        <section id="footnotes"
+        class="footnotes footnotes-end-of-document" role="doc-endnotes">
+        <hr />
+        <ol>
+        <li id="fn1">This data is from a very early version of a math
+        demonstration program made by a friend. The example below shows
+        what the data looks like for a 3-sided regular polygon.
+        <details open>
+        <summary>
+        3-sided regular polygon data
+        </summary>
+        <br>
+        <!-- I put it in here just as a `style`, it didn't work. I put it in as a div with that `style`, it didn't work. I put it in as a div of that class which has those properties in style.css, it works -->
+        <!-- i hate webdev i hate webdev i hate webdev i hate webdev i hate webdev i hate webdev -->
+        <div class="force-word-wrap">
+        <pre><code>[Vertex { position: Pos([0.5, 0.0, 0.0]), color: Col([0.5310667, 0.7112941, 0.7138775]) }, Vertex { position: Pos([-0.25000003, 0.4330127, 0.0]), color: Col([0.7492257, 0.3142163, 0.49905664]) }, Vertex { position: Pos([0.0, 0.0, 0.0]), color: Col([0.2046682, 0.25598457, 0.72071356]) }, Vertex { position: Pos([-0.25000003, 0.4330127, 0.0]), color: Col([0.6389981, 0.5204368, 0.077735074]) }, Vertex { position: Pos([-0.24999996, -0.43301272, 0.0]), color: Col([0.8869035, 0.30709425, 0.8658899]) }, Vertex { position: Pos([0.0, 0.0, 0.0]), color: Col([0.2046682, 0.25598457, 0.72071356]) }, Vertex { position: Pos([-0.24999996, -0.43301272, 0.0]), color: Col([0.6236294, 0.03584433, 0.7590722]) }, Vertex { position: Pos([0.5, 8.742278e-8, 0.0]), color: Col([0.6105084, 0.3593351, 0.85544324]) }, Vertex { position: Pos([0.0, 0.0, 0.0]), color: Col([0.2046682, 0.25598457, 0.72071356]) }]</code></pre>
+        </div>
+        </details>
+        <a href="#fnref1" class="footnote-back"
+        role="doc-backlink">↩︎</a></li>
+        <li id="fn2"><p>My code can generate up to 25 GB/s. However, it
+        does random writes to my drive, which is <em>much</em> slower.
+        So on one hand, you could say my code is so amazingly fast that
+        current day technologies simply can't keep up. Or you could say
+        that I have no idea how to code for real world scenarios.<a
+        href="#fnref2" class="footnote-back"
+        role="doc-backlink">↩︎</a></p></li>
+        </ol>
+        </section>
+        <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
+        <script src="/prism.js"></script>
+    </body>
+    <footer>
+        <p><a href="https://git.askiiart.net/askiiart/engl-2311-blog">Source code</a>&ensp;|&ensp;<a href="/feed.xml">RSS</a>&ensp;|&ensp;<a href="/glossary.html">Glossary</a>&ensp;|&ensp;<a href="/about.html">About</a></p>
+        <small>Image captions are the same as the alt text; assuming you're sighted, you can most likely ignore them.</small>
+    </footer>
+</html>

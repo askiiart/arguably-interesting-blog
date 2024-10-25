@@ -79,10 +79,11 @@ code {
     padding: .125em;
 }
 
-wrap {
-    word-wrap: break-word
-}
-
+.force-word-wrap pre code {
+    white-space: normal;
+    word-wrap: break-word;
+ }
+ 
 @media (max-device-width: 1200px) {
     h1 {
             line-height: 1.2;

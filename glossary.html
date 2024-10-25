@@ -31,7 +31,7 @@
         <li>Filesystem: The system which keeps track of how data is
         written to disk, like NTFS, FAT32, or ext4. Some filesystems,
         like ZFS or btrfs, have extra features like redundancy or
-        compression.<img src="image.png" title="alt text" alt="alt text" /></li>
+        compression.</li>
         <li>Git: The most common version control system by far - keeps
         track of different versions of files, can be used to resolve
         conflicting changes, etc.
@@ -91,6 +91,13 @@
         <li><code>iso</code> file: A disk image file, can be "burned" to
         a USB flash drive (or any other disk) and booted off of, often
         used for Linux installers and/or live images.</li>
+        <li>FUSE: A filesystem interface used for running filesystems in
+        userspace (i.e. not in the kernel)</li>
+        <li>Kernel: The very core of an operating system, with all its
+        most essential functions, like filesystems (aside from those
+        using FUSE). On Linux, device drivers are usually in the kernel
+        directly, rather than being installed separately like on
+        Windows.</li>
         </ul>
         <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
         <script src="/prism.js"></script>

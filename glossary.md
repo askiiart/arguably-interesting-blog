@@ -7,7 +7,7 @@
 - Container image: The base filesystem of a container
   - OCI image: The OCI's standard for container images, used by essentially all Linux container platforms
 - AUR: Arch User Repository, a repository for Arch Linux packages which are maintained by users. AUR only hosts computer-readable instructions and related files (via `PKGBUILD` files) for creating the packages, not the packages or programs themselves
-- Filesystem: The system which keeps track of how data is written to disk, like NTFS, FAT32, or ext4. Some filesystems, like ZFS or btrfs, have extra features like redundancy or compression.![alt text](image.png)
+- Filesystem: The system which keeps track of how data is written to disk, like NTFS, FAT32, or ext4. Some filesystems, like ZFS or btrfs, have extra features like redundancy or compression.
 - Git: The most common version control system by far - keeps track of different versions of files, can be used to resolve conflicting changes, etc.
   - Forking: Copying a Git repository and optionally and making changes to it. Can be simply to contribute the changes back to the upstream project later, or to use something as a base for your own project.
   - Branches: Different "chains" of versions of code, which can, well, branch apart, merge back together, and so on. Different branches don't necessarily have to be related whatsoever, but they usually are made from other branches.
@@ -29,3 +29,5 @@
 - `pacman`: Arch Linux's package manager, also used by blendOS
 - `PKGBUILD`: A file defining how to build a package which can be install by `pacman`.
 - `iso` file: A disk image file, can be "burned" to a USB flash drive (or any other disk) and booted off of, often used for Linux installers and/or live images.
+- FUSE: A filesystem interface used for running filesystems in userspace (i.e. not in the kernel)
+- Kernel: The very core of an operating system, with all its most essential functions, like filesystems (aside from those using FUSE). On Linux, device drivers are usually in the kernel directly, rather than being installed separately like on Windows.

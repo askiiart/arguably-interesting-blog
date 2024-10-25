@@ -24,7 +24,7 @@ I then realized that my `iso` file worked, but was not using my repo, and I had 
 
 Turns out I had added my repo to the container's `pacman` configuration, but not to the `pacman` config for `archiso`, the tool used to generate the `iso` file, or the actual resulting `iso` image's `pacman` config either. So while I would have been able to install anything from my repo in the container, the repo was unused by `archiso`.
 
-I just added the missing packages needed to build the `iso` file, plus all the others on blendOS's GitLab, and rebuilt it. After a bit of troublshooting (nothing interesting, just incompetency, wrong perms, stuff like that), I got it working perfectly.
+I just added the missing packages needed to build the `iso` file, plus all the others on blendOS's GitLab, and rebuilt it. After a bit of troubleshooting (nothing interesting, just incompetency, wrong perms, stuff like that), I got it working perfectly.
 
 From the buid log:
 
