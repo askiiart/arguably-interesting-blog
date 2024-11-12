@@ -30,7 +30,7 @@ From the buid log:
 
 ```txt
 [mkarchiso] INFO: Done!
-2.3G	/drone/src/image-builder/out/blendOS-2024.10.04-x86_64.iso
+2.3G /drone/src/image-builder/out/blendOS-2024.10.04-x86_64.iso
 0
 ```
 
@@ -83,4 +83,4 @@ From the buid log:
 ## Citations
 
 &emsp;Saraswat, Rudra, et al. “blendOS · GitLab.” *GitLab*, [git.blendos.co/blendOS](https://git.blendos.co/blendOS). Accessed 2 Oct. 2024.\
-&emsp;Saraswat, Rudra, and Asterisk. “blendOS / image-builder · GitLab.” *GitLab*, [git.blendos.co/blendOS/image-builder](https://git.blendos.co/blendOS/image-builder). Accessed 3 Oct. 2024sku.
+&emsp;Saraswat, Rudra, and Asterisk. “blendOS / image-builder · GitLab.” *GitLab*, [git.blendos.co/blendOS/image-builder](https://git.blendos.co/blendOS/image-builder). Accessed 3 Oct. 2024.
