@@ -34,8 +34,7 @@ body {
 }
 
 li {
-    font-family: 'Atkinson Hyperlegible';
-}
+    font: 18px/1.35 'Atkinson Hyperlegible', sans-serif;}
 
 p,
 footer {

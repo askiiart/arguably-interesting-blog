@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta content="width=device-width, initial-scale=1" charset="utf-8" />
+        <title>Using `clap`</title>
+        <link href="/style.css" type="text/css" rel="stylesheet" />
+        <link href="/prism.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body class="line-numbers">
+        <h1 id="using-clap">Using <code>clap</code></h1>
+        <p>Clap stands for Command Line Argument Parser, and put simply,
+        it's a great library for making command-line stuff with Rust.
+        Even Cargo, Rust's package manager, depends on it [4], and it's
+        been downloaded over 300 million times [5].</p>
+        <p>Rather than going over everything clap can do, I'll go over
+        how I've used it in my <code>disk-read-benchmark</code> program
+        I'll be using in my next blog post.</p>
+        <h2 id="basics">Basics</h2>
+        <p>First off, we need to install <code>clap</code>; make sure to
+        enable its <code>derive</code> feature as that's what we'll be
+        using.</p>
+        <div class="sourceCode" id="cb1"><pre
+        class="language-sh"><code class="language-bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> add clap <span class="at">--features</span> derive</span></code></pre></div>
+        <p>First off, we need to get a bit of code just to start
+        off:</p>
+        <div class="sourceCode" id="cb2"><pre
+        class="language-rust"><code class="language-rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">clap::</span><span class="op">{</span>Parser<span class="op">,</span> Subcommand<span class="op">};</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>Parser<span class="at">)]</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>command<span class="at">(</span>version<span class="op">,</span> about<span class="op">,</span> long_about <span class="op">=</span> <span class="cn">None</span><span class="at">)]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">struct</span> Cli <span class="op">{</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">#[</span>command<span class="at">(</span>subcommand<span class="at">)]</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">pub</span> command<span class="op">:</span> Commands<span class="op">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+        <p>This has the built-in "version" and "about" options, with the
+        long "about" option disabled.</p>
+        <p>Next, we need to list all out commands we'll have:</p>
+        <div class="sourceCode" id="cb3"><pre
+        class="language-rust"><code class="language-rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>Subcommand<span class="at">)]</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">enum</span> Commands <span class="op">{</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">///Run this thing</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    Run<span class="op">,</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">///Delete the stuff that thing does</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    Delete<span class="op">,</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+        <p>The documentation comments (<code>///</code>) should
+        <em>not</em> have a space after the slashes, as otherwise the
+        program will have an extra space where it shouldn't.</p>
+        <p>Finally, we create the <code>main()</code> function. First it
+        parses everything, then checks what command was run and runs the
+        relevant code.</p>
+        <div class="sourceCode" id="cb4"><pre
+        class="language-rust"><code class="language-rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> cli <span class="op">=</span> <span class="pp">Cli::</span>parse()<span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">match</span> cli<span class="op">.</span>command <span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="pp">Commands::</span>Run <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>            run()<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="pp">Commands::</span>Delete <span class="op">{</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            delete()<span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+        <p>That's all you need to know to use <code>clap</code> at a
+        very basic level; for more details, check out the docs [1]. But,
+        you probably don't want to have to type in the entire command
+        automatically, autocomplete would be nice. So I'll also go over
+        how to use <code>clap_complete</code> as well.</p>
+        <h2 id="clap_complete"><code>clap_complete</code></h2>
+        <p>Searching through the documentation [2], you'll notice that
+        the docs don't cover how to use it with clap's derive at all.
+        Instead, after some Googling, I found an example script in
+        <em>clap</em>'s repository [3], which I then adapted and played
+        around with a bit until I got it figured out.</p>
+        <p>Anyways, again, we need to install <code>clap_complete</code>
+        first:</p>
+        <div class="sourceCode" id="cb5"><pre
+        class="language-sh"><code class="language-bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> add clap_complete</span></code></pre></div>
+        <p>Then, add the relevant imports. We'll just being doing it for
+        the fish shell since that's what I use, so we'll only import
+        <code>Fish</code>; Bash, Zsh, PowerShell, and Elvish are also
+        supported.</p>
+        <div class="sourceCode" id="cb6"><pre
+        class="language-rust"><code class="language-rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">use</span> <span class="pp">clap_complete::aot::</span><span class="op">{</span>generate<span class="op">,</span> Fish<span class="op">};</span></span></code></pre></div>
+        <p>Then, we need to add a command to generate the
+        completion:</p>
+        <div class="sourceCode" id="cb7"><pre
+        class="language-rust"><code class="language-rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="at">#[</span>derive<span class="at">(</span>Subcommand<span class="at">)]</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">pub</span> <span class="kw">enum</span> Commands <span class="op">{</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">///Run this thing</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    Run<span class="op">,</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">///Delete the stuff that thing does</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    Delete<span class="op">,</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">///Generate fish completions</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    FishCompletions<span class="op">,</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+        <p>Next, we actually generate the completion, adding it like
+        it's another command:</p>
+        <div class="sourceCode" id="cb8"><pre
+        class="language-rust"><code class="language-rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>    <span class="cf">match</span> cli<span class="op">.</span>command <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="pp">Commands::</span>Run <span class="op">{</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>            run()<span class="op">;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="pp">Commands::</span>Delete <span class="op">{</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>            delete()<span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="pp">Commands::</span>GenerateFishCompletions <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            generate(</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>                Fish<span class="op">,</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>                <span class="op">&amp;</span><span class="kw">mut</span> <span class="pp">Cli::</span>command()<span class="op">,</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">&quot;example-program&quot;</span><span class="op">,</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>                <span class="op">&amp;</span><span class="kw">mut</span> stdout()<span class="op">,</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>            )<span class="op">;</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code></pre></div>
+        <p>To explain the options for <code>generate()</code>:</p>
+        <ul>
+        <li><code>Fish</code>: The shell we're using.</li>
+        <li><code>&amp;mut Cli::command()</code>: I don't actually know
+        what this does, but understanding ths library fully this is
+        beyond my pay grade, especially given the somewhat lacking
+        docs.</li>
+        <li><code>"example-program"</code>: The name of our program</li>
+        <li><code>&amp;mut stdout()</code>: <code>stdout</code>, so that
+        it can print the completions. Why does it do it this way? I
+        don't know, it doesn't make sense to me. Why doesn't it just
+        return it as a String? I don't know. But it works, I
+        suppose.</li>
+        </ul>
+        <p>As an example of all this, here's my
+        <code>disk-read-benchmark</code> program, running using all
+        this. The commands have formatting I can't do, so it looks even
+        better than I can even show here.</p>
+        <div class="sourceCode" id="cb9"><pre
+        class="language-txt"><code class="language-default"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>~&gt; disk-read-benchmark</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>Usage: disk-read-benchmark &lt;COMMAND&gt;</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Commands:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  generate-bash-completions  Generate bash completions</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  generate-zsh-completions   Generate zsh completions</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  generate-fish-completions  Generate fish completions</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  grab-data                  Grabs the datasets used for benchmarking</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  benchmark                  Runs the benchmark</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  prep-dirs                  Prepares the directories so other programs can prepare their datasets</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  run                        Runs it all</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  help                       Print this message or the help of the given subcommand(s)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>Options:</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  -h, --help     Print help</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  -V, --version  Print version</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>~&gt; disk-read-benchmark generate-fish-completions | source</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>~&gt; disk-read-benchmark benchmark --help</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>Runs the benchmark</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>Usage: disk-read-benchmark benchmark</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>Options:</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>  -h, --help  Print help</span></code></pre></div>
+        <p>To better see how great it looks, here's a screenshot:</p>
+        <img src="/assets/using-clap/1.png"
+        title="The same output, but with very nice formatting - underlining and bolding for headers and the tables" alt="The same output, but with very nice formatting - underlining and bolding for headers and the tables" />
+        <p>Pressing tab twice after entering
+        <code>disk-read-benchmark</code> displays the completions, which
+        I can select and use like any other program's.</p>
+        <div class="sourceCode" id="cb10"><pre
+        class="language-txt"><code class="language-default"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>~&gt; disk-read-benchmark</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>benchmark                         (Runs the benchmark)  grab-data                               (Grabs the datasets used for benchmarking)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>generate-bash-completions  (Generate bash completions)  help                   (Print this message or the help of the given subcommand(s))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>generate-fish-completions  (Generate fish completions)  prep-dirs  (Prepares the directories so other programs can prepare their datasets)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>generate-zsh-completions    (Generate zsh completions)  run                                                                  (Runs it all)</span></code></pre></div>
+        <h2 id="sources">Sources</h2>
+        <ol type="1">
+        <li><a href="https://docs.rs/clap/latest/clap/"
+        class="uri">https://docs.rs/clap/latest/clap/</a></li>
+        <li><a
+        href="https://docs.rs/clap_complete/latest/clap_complete/"
+        class="uri">https://docs.rs/clap_complete/latest/clap_complete/</a></li>
+        <li><a
+        href="https://github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs"
+        class="uri">https://github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs</a></li>
+        <li><a
+        href="https://github.com/rust-lang/cargo/blob/master/Cargo.toml"
+        class="uri">https://github.com/rust-lang/cargo/blob/master/Cargo.toml</a></li>
+        <li><a href="https://crates.io/crates/clap"
+        class="uri">https://crates.io/crates/clap</a></li>
+        </ol>
+        <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
+        <script src="/prism.js"></script>
+    </body>
+    <footer>
+        <p><a href="https://git.askiiart.net/askiiart/engl-2311-blog">Source code</a>&ensp;|&ensp;<a href="/feed.xml">RSS</a>&ensp;|&ensp;<a href="/glossary.html">Glossary</a>&ensp;|&ensp;<a href="/about.html">About</a></p>
+        <small>Image captions are the same as the alt text; assuming you're sighted, you can most likely ignore them.</small>
+    </footer>
+</html>

@@ -31,3 +31,4 @@
 - `iso` file: A disk image file, can be "burned" to a USB flash drive (or any other disk) and booted off of, often used for Linux installers and/or live images.
 - FUSE: A filesystem interface used for running filesystems in userspace (i.e. not in the kernel)
 - Kernel: The very core of an operating system, with all its most essential functions, like filesystems (aside from those using FUSE). On Linux, device drivers are usually in the kernel directly, rather than being installed separately like on Windows.
+- Shell: The program which *is* the command-line interface.

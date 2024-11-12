@@ -6,12 +6,12 @@ DwarFS is a filesystem developed by the user mhx on GitHub [1], which is self-de
 
 The datasets being used for this test will be the following:
 
-- 25 GB of null data (just `000000000000` in binary)
+- 25 GB of null data (just `00000000` in binary)
 - 25 GB of random data[^1]
 - Data for a 100 million-sided regular polygon; ~29 GB[^2]
 - The current Linux longterm release source ([6.6.58](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.58.tar.xz) [2]); ~1.5 GB
 - For some rough latency testing:
-  - 1000 4 kilobyte files filled with null data (again, just `0000000` in binary)
+  - 1000 4 kilobyte files filled with null data (again, just `00000000` in binary)
   - 1000 4 kilobyte files filled with random data
 
 All this data should cover both latency and read speed testing for data that compresses differently - extremely compressible files with null data, decently compressible files, and random data which can't be compressed well.
