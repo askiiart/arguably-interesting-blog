@@ -82,5 +82,5 @@ From the buid log:
 
 ## Citations
 
-&emsp;Saraswat, Rudra, et al. “blendOS · GitLab.” *GitLab*, [git.blendos.co/blendOS](https://git.blendos.co/blendOS). Accessed 2 Oct. 2024.\
-&emsp;Saraswat, Rudra, and Asterisk. “blendOS / image-builder · GitLab.” *GitLab*, [git.blendos.co/blendOS/image-builder](https://git.blendos.co/blendOS/image-builder). Accessed 3 Oct. 2024.
+&emsp;- Saraswat, Rudra, et al. “blendOS · GitLab.” *GitLab*, [git.blendos.co/blendOS](https://git.blendos.co/blendOS). Accessed 2 Oct. 2024.\
+&emsp;- Saraswat, Rudra, and Asterisk. “blendOS / image-builder · GitLab.” *GitLab*, [git.blendos.co/blendOS/image-builder](https://git.blendos.co/blendOS/image-builder). Accessed 3 Oct. 2024.

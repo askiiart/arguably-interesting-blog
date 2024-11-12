@@ -1,6 +1,6 @@
 # Using `clap`
 
-Clap stands for Command Line Argument Parser, and put simply, it's a great library for making command-line stuff with Rust. Even Cargo, Rust's package manager, depends on it [4], and it's been downloaded over 300 million times [5].
+Clap stands for Command Line Argument Parser, and put simply, it's a great library for making command-line stuff with Rust. Even Cargo, Rust's package manager, depends on it (*Cargo/cargo.toml at master*), and it's been downloaded over 300 million times (*Clap - Crates.io: Rust package registry*).
 
 Rather than going over everything clap can do, I'll go over how I've used it in my `disk-read-benchmark` program I'll be using in my next blog post.
 
@@ -58,11 +58,11 @@ fn main() {
 }
 ```
 
-That's all you need to know to use `clap` at a very basic level; for more details, check out the docs [1]. But, you probably don't want to have to type in the entire command automatically, autocomplete would be nice. So I'll also go over how to use `clap_complete` as well.
+That's all you need to know to use `clap` at a very basic level; for more details, check out the docs (*clap Documentation*). But, you probably don't want to have to type in the entire command automatically, autocomplete would be nice. So I'll also go over how to use `clap_complete` as well.
 
 ## `clap_complete`
 
-Searching through the documentation [2], you'll notice that the docs don't cover how to use it with clap's derive at all. Instead, after some Googling, I found an example script in *clap*'s repository [3], which I then adapted and played around with a bit until I got it figured out.
+Searching through the documentation (*Clap_complete Documentation*), you'll notice that the docs don't cover how to use it with clap's derive at all. Instead, after some Googling, I found an example script in *clap*'s repository (*completion-derive.rs at master*), which I then adapted and played around with a bit until I got it figured out.
 
 Anyways, again, we need to install `clap_complete` first:
 
@@ -163,8 +163,8 @@ generate-zsh-completions    (Generate zsh completions)  run                     
 
 ## Sources
 
-1. <https://docs.rs/clap/latest/clap/>
-2. <https://docs.rs/clap_complete/latest/clap_complete/>
-3. <https://github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs>
-4. <https://github.com/rust-lang/cargo/blob/master/Cargo.toml>
-5. <https://crates.io/crates/clap>
+&emsp;- clap contributors. “clap Documentation.” Clap - Rust, [docs.rs/clap/latest/clap/](https://docs.rs/clap/latest/clap/). Accessed 12 Nov. 2024.\
+&emsp;- clap_complete contributors. “Clap_complete Documentation.” Clap_complete - Rust, [docs.rs/clap_complete/latest/clap_complete](https://docs.rs/clap_complete/latest/clap_complete). Accessed 12 Nov. 2024.\
+&emsp;- clap contributors. “clap/clap_complete/examples/completion-derive.rs at master · Clap-Rs/Clap.” GitHub, [github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs](https://github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs). Accessed 12 Nov. 2024.\
+&emsp;- cargo contributors. “cargo/Cargo.Toml at master · rust-lang/cargo.” GitHub, [github.com/rust-lang/cargo/blob/master/Cargo.toml](https://github.com/rust-lang/cargo/blob/master/Cargo.toml). Accessed 12 Nov. 2024.\
+&emsp;- “Clap - Crates.io: Rust Package Registry.” crates.io, crates.io/crates/clap. Accessed 12 Nov. 2024.

@@ -54,7 +54,7 @@ P.S. I can't get it across while keeping this post decent quality and on-topic, 
 
 ## Sources
 
-“Install Additional Drivers and Libraries in Vanilla OS.” *Vanilla OS Docs*, Vanilla OS, [docs.vanillaos.org/handbook/en/install-additional-drivers](https://docs.vanillaos.org/handbook/en/install-additional-drivers). Accessed 19 Sept. 2024.\
-“Vanilla OS Docs.” *Vanilla OS*, Vanilla OS, [docs.vanillaos.org/collections/docs](https://docs.vanillaos.org/collections/docs). Accessed 19 Sept. 2024.\
-*Vanilla OS*, [vanillaos.org](https://vanillaos.org). Accessed 19 Sept. 2024.\
-Vanilla-OS. “GitHub: Vanilla-Os/Abroot.” *GitHub*, [github.com/Vanilla-OS/ABRoot](github.com/Vanilla-OS/ABRoot). Accessed 19 Sept. 2024.
+&emsp;- “Install Additional Drivers and Libraries in Vanilla OS.” *Vanilla OS Docs*, Vanilla OS, [docs.vanillaos.org/handbook/en/install-additional-drivers](https://docs.vanillaos.org/handbook/en/install-additional-drivers). Accessed 19 Sept. 2024.\
+&emsp;- “Vanilla OS Docs.” *Vanilla OS*, Vanilla OS, [docs.vanillaos.org/collections/docs](https://docs.vanillaos.org/collections/docs). Accessed 19 Sept. 2024.\
+&emsp;- *Vanilla OS*, [vanillaos.org](https://vanillaos.org). Accessed 19 Sept. 2024.\
+&emsp;- Vanilla-OS. “GitHub: Vanilla-Os/Abroot.” *GitHub*, [github.com/Vanilla-OS/ABRoot](github.com/Vanilla-OS/ABRoot). Accessed 19 Sept. 2024.

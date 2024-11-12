@@ -10,8 +10,10 @@
         <h1 id="using-clap">Using <code>clap</code></h1>
         <p>Clap stands for Command Line Argument Parser, and put simply,
         it's a great library for making command-line stuff with Rust.
-        Even Cargo, Rust's package manager, depends on it [4], and it's
-        been downloaded over 300 million times [5].</p>
+        Even Cargo, Rust's package manager, depends on it
+        (<em>Cargo/cargo.toml at master</em>), and it's been downloaded
+        over 300 million times (<em>Clap - Crates.io: Rust package
+        registry</em>).</p>
         <p>Rather than going over everything clap can do, I'll go over
         how I've used it in my <code>disk-read-benchmark</code> program
         I'll be using in my next blog post.</p>
@@ -63,16 +65,19 @@
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
         <p>That's all you need to know to use <code>clap</code> at a
-        very basic level; for more details, check out the docs [1]. But,
-        you probably don't want to have to type in the entire command
-        automatically, autocomplete would be nice. So I'll also go over
-        how to use <code>clap_complete</code> as well.</p>
+        very basic level; for more details, check out the docs (<em>clap
+        Documentation</em>). But, you probably don't want to have to
+        type in the entire command automatically, autocomplete would be
+        nice. So I'll also go over how to use <code>clap_complete</code>
+        as well.</p>
         <h2 id="clap_complete"><code>clap_complete</code></h2>
-        <p>Searching through the documentation [2], you'll notice that
-        the docs don't cover how to use it with clap's derive at all.
-        Instead, after some Googling, I found an example script in
-        <em>clap</em>'s repository [3], which I then adapted and played
-        around with a bit until I got it figured out.</p>
+        <p>Searching through the documentation (<em>Clap_complete
+        Documentation</em>), you'll notice that the docs don't cover how
+        to use it with clap's derive at all. Instead, after some
+        Googling, I found an example script in <em>clap</em>'s
+        repository (<em>completion-derive.rs at master</em>), which I
+        then adapted and played around with a bit until I got it figured
+        out.</p>
         <p>Anyways, again, we need to install <code>clap_complete</code>
         first:</p>
         <div class="sourceCode" id="cb5"><pre
@@ -170,21 +175,24 @@
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>generate-fish-completions  (Generate fish completions)  prep-dirs  (Prepares the directories so other programs can prepare their datasets)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>generate-zsh-completions    (Generate zsh completions)  run                                                                  (Runs it all)</span></code></pre></div>
         <h2 id="sources">Sources</h2>
-        <ol type="1">
-        <li><a href="https://docs.rs/clap/latest/clap/"
-        class="uri">https://docs.rs/clap/latest/clap/</a></li>
-        <li><a
-        href="https://docs.rs/clap_complete/latest/clap_complete/"
-        class="uri">https://docs.rs/clap_complete/latest/clap_complete/</a></li>
-        <li><a
-        href="https://github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs"
-        class="uri">https://github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs</a></li>
-        <li><a
-        href="https://github.com/rust-lang/cargo/blob/master/Cargo.toml"
-        class="uri">https://github.com/rust-lang/cargo/blob/master/Cargo.toml</a></li>
-        <li><a href="https://crates.io/crates/clap"
-        class="uri">https://crates.io/crates/clap</a></li>
-        </ol>
+        <p> - clap contributors. “clap Documentation.” Clap - Rust, <a
+        href="https://docs.rs/clap/latest/clap/">docs.rs/clap/latest/clap/</a>.
+        Accessed 12 Nov. 2024.<br />
+         - clap_complete contributors. “Clap_complete Documentation.”
+        Clap_complete - Rust, <a
+        href="https://docs.rs/clap_complete/latest/clap_complete">docs.rs/clap_complete/latest/clap_complete</a>.
+        Accessed 12 Nov. 2024.<br />
+         - clap contributors.
+        “clap/clap_complete/examples/completion-derive.rs at master ·
+        Clap-Rs/Clap.” GitHub, <a
+        href="https://github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs">github.com/clap-rs/clap/blob/master/clap_complete/examples/completion-derive.rs</a>.
+        Accessed 12 Nov. 2024.<br />
+         - cargo contributors. “cargo/Cargo.Toml at master ·
+        rust-lang/cargo.” GitHub, <a
+        href="https://github.com/rust-lang/cargo/blob/master/Cargo.toml">github.com/rust-lang/cargo/blob/master/Cargo.toml</a>.
+        Accessed 12 Nov. 2024.<br />
+         - “Clap - Crates.io: Rust Package Registry.” crates.io,
+        crates.io/crates/clap. Accessed 12 Nov. 2024.</p>
         <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>
         <script src="/prism.js"></script>
     </body>
