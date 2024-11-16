@@ -5,11 +5,7 @@
   <title>eng.askiiart.net</title>
   <description>This is the feed for engl.askiiart.net, I guess</description>
   <link>https://askiiart.net</link>
-  <lastBuildDate>Tue, 12 Nov 2024 21:14:09 +0000</lastBuildDate>
-  <item>
-    <title>Benchmarking and comparing DwarFS</title>
-    <link>https://engl.askiiart.net/blog/benchmarking-dwarfs.html</link>
-  </item>
+  <lastBuildDate>Fri, 15 Nov 2024 16:14:25 +0000</lastBuildDate>
   <item>
     <title>Building blendOS (and its packages)</title>
     <link>https://engl.askiiart.net/blog/building-blendos.html</link>
