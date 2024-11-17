@@ -1,0 +1,12 @@
+data/mountpoints/dwarfs,25G-null.bin,12.80490s,371.14600µs,96.32895ms,351.30788ms
+data/mountpoints/dwarfs,25G-random.bin,40.71916s,14.15143ms,109.78266ms,3.51396s
+data/mountpoints/dwarfs,100M-polygon.txt,19.11096s,2.95083ms,96.39260ms,480.97789ms
+data/mountpoints/dwarfs,kernel/linux-6.6.58.tar.xz,160.75466ms,1.52300µs,94.55468ms,882.57600µs
+data/mountpoints/fuse-archive-tar,25G-null.bin,24.88932s,393.56800µs,98.66828ms,0ms
+data/mountpoints/fuse-archive-tar,25G-random.bin,24.84052s,397.62600µs,94.52984ms,0ms
+data/mountpoints/fuse-archive-tar,100M-polygon.txt,26.63768s,77.50500µs,96.61561ms,0ms
+data/mountpoints/fuse-archive-tar,kernel/linux-6.6.58.tar.xz,121.50200ms,1.22300µs,93.25915ms,0ms
+data/datasets,25G-null.bin,25.54820s,27.92200µs,96.79632ms,5.51523ms
+data/datasets,25G-random.bin,16.91976s,290.90600µs,97.64200ms,91.13626ms
+data/datasets,100M-polygon.txt,17.98264s,140.88400µs,98.92292ms,94.05722ms
+data/datasets,kernel/linux-6.6.58.tar.xz,88.59571ms,1.39300µs,91.41823ms,949.77100µs

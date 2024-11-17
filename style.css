@@ -118,3 +118,8 @@ blockquote {
 img {
     max-width: 90vw;
 }
+
+.chart {
+    max-width: 50vw;
+    max-height: 50vh;
+}

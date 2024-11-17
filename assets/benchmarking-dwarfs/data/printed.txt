@@ -1,0 +1,86 @@
+=== data/mountpoints/dwarfs/25G-null.bin ===
+Sequential read (complete file read): 12.80490s
+Sequential latency (1 byte read): 371.14600µs
+Random read (1024x 1 MiB): 96.32895ms
+Random latency (1024x 1 byte read): 351.30788ms
+
+=== data/mountpoints/dwarfs/25G-random.bin ===
+Sequential read (complete file read): 40.71916s
+Sequential latency (1 byte read): 14.15143ms
+Random read (1024x 1 MiB): 109.78266ms
+Random latency (1024x 1 byte read): 3.51396s
+
+=== data/mountpoints/dwarfs/100M-polygon.txt ===
+Sequential read (complete file read): 19.11096s
+Sequential latency (1 byte read): 2.95083ms
+Random read (1024x 1 MiB): 96.39260ms
+Random latency (1024x 1 byte read): 480.97789ms
+
+=== data/mountpoints/dwarfs/kernel/linux-6.6.58.tar.xz ===
+Sequential read (complete file read): 160.75466ms
+Sequential latency (1 byte read): 1.52300µs
+Random read (1024x 1 MiB): 94.55468ms
+Random latency (1024x 1 byte read): 882.57600µs
+
+[bulk] Testing data/mountpoints/dwarfs/small-files/null
+[bulk] Testing data/mountpoints/dwarfs/small-files/random
+
+=== === === === === === === === === === ===
+
+=== data/mountpoints/fuse-archive-tar/25G-null.bin ===
+Sequential read (complete file read): 24.88932s
+Sequential latency (1 byte read): 393.56800µs
+Random read (1024x 1 MiB): 98.66828ms
+Random latency (1024x 1 byte read): 0ms
+
+=== data/mountpoints/fuse-archive-tar/25G-random.bin ===
+Sequential read (complete file read): 24.84052s
+Sequential latency (1 byte read): 397.62600µs
+Random read (1024x 1 MiB): 94.52984ms
+Random latency (1024x 1 byte read): 0ms
+
+=== data/mountpoints/fuse-archive-tar/100M-polygon.txt ===
+Sequential read (complete file read): 26.63768s
+Sequential latency (1 byte read): 77.50500µs
+Random read (1024x 1 MiB): 96.61561ms
+Random latency (1024x 1 byte read): 0ms
+
+=== data/mountpoints/fuse-archive-tar/kernel/linux-6.6.58.tar.xz ===
+Sequential read (complete file read): 121.50200ms
+Sequential latency (1 byte read): 1.22300µs
+Random read (1024x 1 MiB): 93.25915ms
+Random latency (1024x 1 byte read): 0ms
+
+[bulk] Testing data/mountpoints/fuse-archive-tar/small-files/null
+[bulk] Testing data/mountpoints/fuse-archive-tar/small-files/random
+
+=== === === === === === === === === === ===
+
+=== data/datasets/25G-null.bin ===
+Sequential read (complete file read): 25.54820s
+Sequential latency (1 byte read): 27.92200µs
+Random read (1024x 1 MiB): 96.79632ms
+Random latency (1024x 1 byte read): 5.51523ms
+
+=== data/datasets/25G-random.bin ===
+Sequential read (complete file read): 16.91976s
+Sequential latency (1 byte read): 290.90600µs
+Random read (1024x 1 MiB): 97.64200ms
+Random latency (1024x 1 byte read): 91.13626ms
+
+=== data/datasets/100M-polygon.txt ===
+Sequential read (complete file read): 17.98264s
+Sequential latency (1 byte read): 140.88400µs
+Random read (1024x 1 MiB): 98.92292ms
+Random latency (1024x 1 byte read): 94.05722ms
+
+=== data/datasets/kernel/linux-6.6.58.tar.xz ===
+Sequential read (complete file read): 88.59571ms
+Sequential latency (1 byte read): 1.39300µs
+Random read (1024x 1 MiB): 91.41823ms
+Random latency (1024x 1 byte read): 949.77100µs
+
+[bulk] Testing data/datasets/small-files/null
+[bulk] Testing data/datasets/small-files/random
+
+=== === === === === === === === === === ===

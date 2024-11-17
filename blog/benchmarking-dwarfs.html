@@ -20,11 +20,11 @@
         <p>The datasets being used for this test will be the
         following:</p>
         <ul>
-        <li>25 GB of null data (just <code>00000000</code> in
+        <li>25 GiB of null data (just <code>00000000</code> in
         binary)</li>
-        <li>25 GB of random data<a href="#fn1" class="footnote-ref"
+        <li>25 GiB of random data<a href="#fn1" class="footnote-ref"
         id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
-        <li>Data for a 100 million-sided regular polygon; ~29 GB<a
+        <li>Data for a 100 million-sided regular polygon; ~26.5 GiB<a
         href="#fn2" class="footnote-ref" id="fnref2"
         role="doc-noteref"><sup>2</sup></a></li>
         <li>The current Linux longterm release source (<a
@@ -32,30 +32,161 @@
         [2]); ~1.5 GB</li>
         <li>For some rough latency testing:
         <ul>
-        <li>1000 4 kilobyte files filled with null data (again, just
+        <li>1024 4 KiB files filled with null data (again, just
         <code>00000000</code> in binary)</li>
-        <li>1000 4 kilobyte files filled with random data</li>
+        <li>1024 4 KiB files filled with random data</li>
         </ul></li>
         </ul>
         <p>All this data should cover both latency and read speed
         testing for data that compresses differently - extremely
         compressible files with null data, decently compressible files,
         and random data which can't be compressed well.</p>
+        <h3 id="what-filesystems">What filesystems?</h3>
+        <p>I'll be benchmarking DwarFS, fuse-archive (with tar files),
+        and btrfs. In some early, basic testing, I found that mounting
+        any <em>compressed</em> archives with <code>fuse-archive</code>,
+        a tool for mounting archive file formats as read-only
+        filesystems, took far too long. Additionally, being FUSE-based,
+        these would have slightly worse performance than kernel
+        filesystems, so I tried to use a FUSE driver as well for btrfs.
+        Unforunately, I ran into a bug, so I won't be able to quite do
+        an equivalent test; btrfs will only be running in the
+        kernel.</p>
+        <p>During said early testing, I also ran into the fact that most
+        compressed archives, like Gzip-compressed tar archives, also
+        took far too long to <em>create</em>, because Gzip is
+        single-threaded. So all the options with no chance of being used
+        have been marked off, and I'll only be looking into these
+        three.</p>
+        <p>DwarFS also took far too long to create on its default
+        setting, but on compression level 1, it's much faster -
+        11m2.738s for the ~80 GiB total, and considering</p>
+        <h2 id="running-the-benchmark">Running the benchmark</h2>
+        <p>First installed it by cloning the repository, installing it
+        using Cargo, then added its completions to fish (just for this
+        session):</p>
+        <div class="sourceCode" id="cb2"><pre
+        class="language-sh"><code class="language-bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://git.askiiart.net/askiiart/disk-read-benchmark</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ./disk-read-benchmark</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">cargo</span> install <span class="at">--path</span> .</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">disk-read-benchmark</span> generate-fish-completions <span class="kw">|</span> <span class="bu">source</span></span></code></pre></div>
+        <p>Then I prepared all the data:</p>
+        <div class="sourceCode" id="cb3"><pre
+        class="language-sh"><code class="language-bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">disk-read-benchmark</span> prep-dirs</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">disk-read-benchmark</span> grab-data</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./prepare.sh</span></span></code></pre></div>
+        <p><code>disk-read-benchmark</code> prepares all the
+        directories, generates the data to be used for testing, then
+        <code>./prepare.sh</code> uses the data to generate the DwarFS
+        and tar archives.</p>
+        <p>To run it, I just ran this:</p>
+        <div class="sourceCode" id="cb4"><pre
+        class="language-sh"><code class="language-bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">disk-read-benchmark</span> benchmark</span></code></pre></div>
+        <p>Which outputs the data at
+        <code>data/benchmark-data.csv</code> and
+        <code>data/bulk.csv</code> for the single and bulk files,
+        respectively.</p>
+        <h2 id="results">Results</h2>
+        <p>After processing the data with <a
+        href="/assets/benchmarking-dwarfs/process-data.py">this
+        script</a> to make it a bit easier, I put the resulting graphs
+        in here ↓</p>
+        <h3 id="sequential-read">Sequential read</h3>
+        <h3 id="random-read">Random read</h3>
+        <h3 id="sequential-read-latency">Sequential read latency</h3>
+        <div>
+        <canvas id="seq_read_latency_chart" class="chart">
+        </canvas>
+        </div>
+        <h3 id="random-read-latency">Random read latency</h3>
+        <p>The FUSE-based filesystems run into a bit of trouble here -
+        with incompressible data, DwarFS has a hard time keeping up for
+        some reason, despite keeping up just fine with larger random
+        reads on the same data, and so it takes 3 to 4 seconds to run
+        random read latency testing on the 25 GiB random file.
+        Meanwhile, when testing random read latency in
+        <code>fuse-archive</code> pretty much just dies, becoming
+        ridiculously slow (even compared to DwarFS), so I didn't test
+        its random read latency at all and just had its results put as 0
+        milliseconds.</p>
+        <h3 id="summary-and-notes">Summary and notes</h3>
         <h2 id="sources">Sources</h2>
         <ol type="1">
         <li><a href="https://github.com/mhx/dwarfs"
         class="uri">https://github.com/mhx/dwarfs</a></li>
         <li><a href="https://www.kernel.org/"
         class="uri">https://www.kernel.org/</a></li>
+        <li><a
+        href="https://git.askiiart.net/askiiart/disk-read-benchmark"
+        class="uri">https://git.askiiart.net/askiiart/disk-read-benchmark</a></li>
+        <li><a
+        href="https://git.askiiart.net/confused_ace_noises/maths-demos/src/branch/headless-deterministic"
+        class="uri">https://git.askiiart.net/confused_ace_noises/maths-demos/src/branch/headless-deterministic</a></li>
         </ol>
         <h2 id="footnotes">Footnotes</h2>
+        <!-- JavaScript for graphs goes hereeeeeee -->
+        <!-- EXAMPLE HERE -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+          let ctx = document.getElementById('seq_read_latency_chart');
+        const labels = ['Null 25 GiB file', 'Random 25 GiB file', '100 million-sided polygon data', 'Linux LTS kernel']
+        let data = [
+            {
+              label: 'DwarFS',
+              data: [0.37114600000000003, 14.15143, 2.95083, 0.001523],
+              backgroundColor: 'rgb(255, 99, 132)',
+            },
+            {
+              label: 'fuse-archive (tar)',
+              data: [0.393568, 0.397626, 0.07750499999999999, 0.0012230000000000001],
+              backgroundColor: 'rgb(75, 192, 192)',
+            },
+            {
+              label: 'Btrfs',
+              data: [0.027922000000000002, 0.290906, 0.14088399999999998, 0.0013930000000000001],
+              backgroundColor: 'rgb(54, 162, 235)',
+            },
+        ]
+
+        let config = {
+            type: 'bar',
+            data: {
+                datasets: data,
+                labels
+            },
+            options: {
+              plugins: {
+                title: {
+                  display: true,
+                  text: 'Sequential Read Latency - in ms'
+                },
+              },
+              responsive: true,
+              interaction: {
+                intersect: false,
+              },
+            }
+          };
+
+          new Chart(ctx, config);
+        </script>
         <section id="footnotes"
         class="footnotes footnotes-end-of-document" role="doc-endnotes">
         <hr />
         <ol>
-        <li id="fn1">This data is from a very early version of a math
-        demonstration program made by a friend. The example below shows
-        what the data looks like for a 3-sided regular polygon.
+        <li id="fn1"><p>My code can generate up to 25 GB/s. However, it
+        does random writes to my drive, which is <em>much</em> slower.
+        So on one hand, you could say my code is so amazingly fast that
+        current day technologies simply can't keep up. Or you could say
+        that I have no idea how to code for real world scenarios.<a
+        href="#fnref1" class="footnote-back"
+        role="doc-backlink">↩︎</a></p></li>
+        <li id="fn2">This data is from a modified version of an
+        abandoned math demonstration program [4] made by a friend; it
+        generates regular polygons and writes their data to a file. I
+        chose this because it was an artificial and reproducible yet
+        fairly compressible dataset (without being extremely
+        compressible like null data).
         <details open>
         <summary>
         3-sided regular polygon data
@@ -67,15 +198,8 @@
         <pre><code>[Vertex { position: Pos([0.5, 0.0, 0.0]), color: Col([0.5310667, 0.7112941, 0.7138775]) }, Vertex { position: Pos([-0.25000003, 0.4330127, 0.0]), color: Col([0.7492257, 0.3142163, 0.49905664]) }, Vertex { position: Pos([0.0, 0.0, 0.0]), color: Col([0.2046682, 0.25598457, 0.72071356]) }, Vertex { position: Pos([-0.25000003, 0.4330127, 0.0]), color: Col([0.6389981, 0.5204368, 0.077735074]) }, Vertex { position: Pos([-0.24999996, -0.43301272, 0.0]), color: Col([0.8869035, 0.30709425, 0.8658899]) }, Vertex { position: Pos([0.0, 0.0, 0.0]), color: Col([0.2046682, 0.25598457, 0.72071356]) }, Vertex { position: Pos([-0.24999996, -0.43301272, 0.0]), color: Col([0.6236294, 0.03584433, 0.7590722]) }, Vertex { position: Pos([0.5, 8.742278e-8, 0.0]), color: Col([0.6105084, 0.3593351, 0.85544324]) }, Vertex { position: Pos([0.0, 0.0, 0.0]), color: Col([0.2046682, 0.25598457, 0.72071356]) }]</code></pre>
         </div>
         </details>
-        <a href="#fnref1" class="footnote-back"
+        <a href="#fnref2" class="footnote-back"
         role="doc-backlink">↩︎</a></li>
-        <li id="fn2"><p>My code can generate up to 25 GB/s. However, it
-        does random writes to my drive, which is <em>much</em> slower.
-        So on one hand, you could say my code is so amazingly fast that
-        current day technologies simply can't keep up. Or you could say
-        that I have no idea how to code for real world scenarios.<a
-        href="#fnref2" class="footnote-back"
-        role="doc-backlink">↩︎</a></p></li>
         </ol>
         </section>
         <iframe src="https://john.citrons.xyz/embed?ref=askiiart.net" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe>

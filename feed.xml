@@ -5,7 +5,19 @@
   <title>eng.askiiart.net</title>
   <description>This is the feed for engl.askiiart.net, I guess</description>
   <link>https://askiiart.net</link>
-  <lastBuildDate>Fri, 15 Nov 2024 16:14:25 +0000</lastBuildDate>
+  <lastBuildDate>Sun, 17 Nov 2024 06:45:39 +0000</lastBuildDate>
+  <item>
+    <title></title>
+    <link>https://engl.askiiart.net/blog/minimum.html</link>
+  </item>
+  <item>
+    <title>Using `clap`</title>
+    <link>https://engl.askiiart.net/blog/using-clap.html</link>
+  </item>
+  <item>
+    <title>Checking out blendOS</title>
+    <link>https://engl.askiiart.net/blog/blendos.html</link>
+  </item>
   <item>
     <title>Building blendOS (and its packages)</title>
     <link>https://engl.askiiart.net/blog/building-blendos.html</link>
@@ -15,12 +27,8 @@
     <link>https://engl.askiiart.net/blog/vanilla-os.html</link>
   </item>
   <item>
-    <title>Checking out blendOS</title>
-    <link>https://engl.askiiart.net/blog/blendos.html</link>
-  </item>
-  <item>
-    <title>Using `clap`</title>
-    <link>https://engl.askiiart.net/blog/using-clap.html</link>
+    <title>Benchmarking and comparing DwarFS</title>
+    <link>https://engl.askiiart.net/blog/benchmarking-dwarfs.html</link>
   </item>
   <item>
     <title>Glossary</title>
