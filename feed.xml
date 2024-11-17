@@ -5,7 +5,7 @@
   <title>eng.askiiart.net</title>
   <description>This is the feed for engl.askiiart.net, I guess</description>
   <link>https://askiiart.net</link>
-  <lastBuildDate>Sun, 17 Nov 2024 06:45:39 +0000</lastBuildDate>
+  <lastBuildDate>Sun, 17 Nov 2024 07:02:04 +0000</lastBuildDate>
   <item>
     <title></title>
     <link>https://engl.askiiart.net/blog/minimum.html</link>
@@ -25,10 +25,6 @@
   <item>
     <title>OCI Images as a "Filesystem": Vanilla OS</title>
     <link>https://engl.askiiart.net/blog/vanilla-os.html</link>
-  </item>
-  <item>
-    <title>Benchmarking and comparing DwarFS</title>
-    <link>https://engl.askiiart.net/blog/benchmarking-dwarfs.html</link>
   </item>
   <item>
     <title>Glossary</title>
