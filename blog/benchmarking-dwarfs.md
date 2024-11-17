@@ -120,6 +120,7 @@ let data = [
     },
 ]
 
+
 let config = {
     type: 'bar',
     data: {
@@ -139,6 +140,10 @@ let config = {
       },
     }
   };
+
+
+Chart.defaults.borderColor = "#eee"
+Chart.defaults.color = "#eee";
 
   new Chart(ctx, config);
 </script>

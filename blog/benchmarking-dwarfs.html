@@ -87,7 +87,8 @@
         <code>data/bulk.csv</code> for the single and bulk files,
         respectively.</p>
         <h2 id="results">Results</h2>
-        <p>After processing the data with <a
+        <p>After processing <a
+        href="/assets/benchmarking-dwarfs/data/">the data</a> with <a
         href="/assets/benchmarking-dwarfs/process-data.py">this
         script</a> to make it a bit easier, I put the resulting graphs
         in here ↓</p>
@@ -148,6 +149,7 @@
             },
         ]
 
+
         let config = {
             type: 'bar',
             data: {
@@ -167,6 +169,10 @@
               },
             }
           };
+
+
+        Chart.defaults.borderColor = "#eee"
+        Chart.defaults.color = "#eee";
 
           new Chart(ctx, config);
         </script>

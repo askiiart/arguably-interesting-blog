@@ -43,7 +43,7 @@ class HelperFunctions:
 
 def sequential_latency():
     datasets = {'labels': []}
-    with open('assets/benchmarking-dwarfs/original-data/benchmark-data.csv', 'rt') as f:
+    with open('assets/benchmarking-dwarfs/data/benchmark-data.csv', 'rt') as f:
         for line in csv.reader(f):
             fs = HelperFunctions.get_fs(line[0])
             label = HelperFunctions.get_label(line[1])
@@ -142,3 +142,5 @@ let config = {
 
     title = 'Sequential Read Latency'
     print(config_code.replace('$title$', title).replace('$timeunit$', largest_time_unit))
+    print('\nChart.defaults.borderColor = "#eee"')
+    print('Chart.defaults.color = "#eee";')
