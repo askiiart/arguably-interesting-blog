@@ -50,334 +50,29 @@ class HelperFunctions:
         time = re.sub('[^0-9\\.]', '', time)
         return float(time)
 
-
-def get_seq_latency_data() -> tuple:
+def get_data(single_files_index: int, bulk_test_name: str):
     # format: { 'labels': ['btrfs'], 'btrfs': [9, 8, 4, 6]}
-    datasets = {'labels': []}
+    data = {'labels': []}
     with open('assets/benchmarking-dwarfs/data/benchmark-data.csv', 'rt') as f:
         for line in csv.reader(f):
             fs = HelperFunctions.get_fs(line[0])
             label = HelperFunctions.get_label(line[1])
-            datasets['labels'].append(label) if label not in datasets[
+            data['labels'].append(label) if label not in data[
                 'labels'
             ] else False
             try:
-                datasets[fs].append(line[4])
+                data[fs].append(line[single_files_index])
             except KeyError:
-                datasets[fs] = []
-                datasets[fs].append(line[4])
-
-    # NOTE: this will break if the bulk data contains a larger unit than the single file data, but that's unlikely to happen so I'm not gonna deal with it
-    largest_time_unit = 'ns'
-    for key in datasets.keys():
-        if key == 'labels':
-            continue
-        for item in datasets[key]:
-            if largest_time_unit == 's':
-                break
-            if item.endswith('ms'):
-                largest_time_unit = 'ms'
-            elif item.endswith('µs') and largest_time_unit != 'ms':
-                largest_time_unit = 'µs'
-            elif (
-                item.endswith('ns')
-                and largest_time_unit != 'ms'
-                and largest_time_unit != 'µs'
-            ):
-                largest_time_unit = 'ns'
-            elif re.sub('[0-9]\\.', '', item) == 's':
-                largest_time_unit = 's'
-                break
-
-    for key in datasets.keys():
-        if key == 'labels':
-            continue
-        for i in range(len(datasets[key])):
-            datasets[key][i] = HelperFunctions.convert_time(
-                datasets[key][i], largest_time_unit
-            )
-
-    with open('assets/benchmarking-dwarfs/data/bulk.csv', 'rt') as f:
-        for line in csv.reader(f):
-            if line[2] != 'bulk_sequential_read_latency':
-                continue
-            fs = HelperFunctions.get_fs(line[0])
-            label = HelperFunctions.get_label(line[1])
-            datasets['labels'].append(label) if label not in datasets[
-                'labels'
-            ] else False
-
-            for item in line[3:]:
-                if largest_time_unit == 's':
-                    break
-                if item.endswith('ms'):
-                    largest_time_unit = 'ms'
-                elif item.endswith('µs') and largest_time_unit != 'ms':
-                    largest_time_unit = 'µs'
-                elif (
-                    item.endswith('ns')
-                    and largest_time_unit != 'ms'
-                    and largest_time_unit != 'µs'
-                ):
-                    largest_time_unit = 'ns'
-                elif re.sub('[0-9]\\.', '', item) == 's':
-                    largest_time_unit = 's'
-                    break
-
-            for i in range(len(line[3:])):
-                line[i + 3] = HelperFunctions.convert_time(item, largest_time_unit)
-
-            datasets[fs].append(sum(line[3:]) / len(line[3:]))
-
-        return (datasets, largest_time_unit)
-
-
-def seq_latency():
-    with open('assets/benchmarking-dwarfs/js/seq_latency.js', 'wt') as f:
-        # from https://github.com/chartjs/Chart.js/blob/master/docs/scripts/utils.js (CHART_COLORS)
-        # modified so similar color aren't adjacent
-        chart_colors = [
-            "'rgb(255, 99, 132)'",  # red
-            "'rgb(75, 192, 192)'",  # green
-            "'rgb(54, 162, 235)'",  # blue
-            "'rgb(255, 159, 64)'",  # orange
-            "'rgb(153, 102, 255)'",  # purple
-            "'rgb(255, 205, 86)'",  # yellow
-            "'rgb(201, 203, 207)'",  # grey
-        ]
-
-        labels_code = 'labels = $labels$'
-        dataset_code = '''
-        {
-        label: '$label$',
-        data: $data$,
-        backgroundColor: $color$,
-        },
-        '''
-
-        config_code = '''
-    config = {
-        type: 'bar',
-        data: {
-            datasets: data,
-            labels
-        },
-        options: {
-        plugins: {
-            title: {
-            display: true,
-            text: '$title$ - in $timeunit$'
-            },
-        },
-        responsive: true,
-        interaction: {
-            intersect: false,
-        },
-        }
-    };
-    '''
-
-        data, largest_time_unit = get_seq_latency_data()
-        labels_code = labels_code.replace('$labels$', format(data['labels']))
-        f.write(labels_code)
-        data.pop('labels')
-        f.write('\ndata = [')
-        for fs in data.keys():
-            f.write(
-                dataset_code.replace('$label$', fs)
-                .replace('$data$', format(data[fs]))
-                .replace('$color$', format(chart_colors[list(data.keys()).index(fs)]))
-            )
-        f.write('\n]\n')
-
-        title = 'Sequential Read Latency'
-        f.write(
-            config_code.replace('$title$', title).replace(
-                '$timeunit$', largest_time_unit
-            )
-        )
-
-        f.write('\nChart.defaults.borderColor = "#eee"\n')
-        f.write('Chart.defaults.color = "#eee";\n')
-        f.write('ctx = document.getElementById("seq_read_latency_chart");\n')
-        f.write('new Chart(ctx, config);\n')
-
-
-def get_rand_latency_data() -> tuple:
-    # format: { 'labels': ['btrfs'], 'btrfs': [9, 8, 4, 6]}
-    datasets = {'labels': []}
-    with open('assets/benchmarking-dwarfs/data/benchmark-data.csv', 'rt') as f:
-        for line in csv.reader(f):
-            fs = HelperFunctions.get_fs(line[0])
-            label = HelperFunctions.get_label(line[1])
-            datasets['labels'].append(label) if label not in datasets[
-                'labels'
-            ] else False
-            try:
-                datasets[fs].append(line[5])
-            except KeyError:
-                datasets[fs] = []
-                datasets[fs].append(line[5])
-
-    # NOTE: this will break if the bulk data contains a larger unit than the single file data, but that's unlikely to happen so I'm not gonna deal with it
-    largest_time_unit = 'ns'
-    for key in datasets.keys():
-        if key == 'labels':
-            continue
-        for item in datasets[key]:
-            if largest_time_unit == 's':
-                break
-            if item.endswith('ms'):
-                largest_time_unit = 'ms'
-            elif item.endswith('µs') and largest_time_unit != 'ms':
-                largest_time_unit = 'µs'
-            elif (
-                item.endswith('ns')
-                and largest_time_unit != 'ms'
-                and largest_time_unit != 'µs'
-            ):
-                largest_time_unit = 'ns'
-            elif re.sub('[0-9]\\.', '', item) == 's':
-                largest_time_unit = 's'
-                break
-
-    for key in datasets.keys():
-        if key == 'labels':
-            continue
-        for i in range(len(datasets[key])):
-            datasets[key][i] = HelperFunctions.convert_time(
-                datasets[key][i], largest_time_unit
-            )
-
-    with open('assets/benchmarking-dwarfs/data/bulk.csv', 'rt') as f:
-        for line in csv.reader(f):
-            if line[2] != 'bulk_random_read_latency':
-                continue
-            fs = HelperFunctions.get_fs(line[0])
-            label = HelperFunctions.get_label(line[1])
-            datasets['labels'].append(label) if label not in datasets[
-                'labels'
-            ] else False
-
-            for item in line[3:]:
-                if largest_time_unit == 's':
-                    break
-                if item.endswith('ms'):
-                    largest_time_unit = 'ms'
-                elif item.endswith('µs') and largest_time_unit != 'ms':
-                    largest_time_unit = 'µs'
-                elif (
-                    item.endswith('ns')
-                    and largest_time_unit != 'ms'
-                    and largest_time_unit != 'µs'
-                ):
-                    largest_time_unit = 'ns'
-                elif re.sub('[0-9]\\.', '', item) == 's':
-                    largest_time_unit = 's'
-                    break
-
-            for i in range(len(line[3:])):
-                line[i + 3] = HelperFunctions.convert_time(item, largest_time_unit)
-
-            datasets[fs].append(sum(line[3:]) / len(line[3:]))
-
-        return (datasets, largest_time_unit)
-
-
-def rand_latency():
-    with open('assets/benchmarking-dwarfs/js/rand_latency.js', 'wt') as f:
-        # from https://github.com/chartjs/Chart.js/blob/master/docs/scripts/utils.js (CHART_COLORS)
-        # modified so similar color aren't adjacent
-        chart_colors = [
-            "'rgb(255, 99, 132)'",  # red
-            "'rgb(75, 192, 192)'",  # green
-            "'rgb(54, 162, 235)'",  # blue
-            "'rgb(255, 159, 64)'",  # orange
-            "'rgb(153, 102, 255)'",  # purple
-            "'rgb(255, 205, 86)'",  # yellow
-            "'rgb(201, 203, 207)'",  # grey
-        ]
-
-        labels_code = 'labels = $labels$'
-        dataset_code = '''
-        {
-        label: '$label$',
-        data: $data$,
-        backgroundColor: $color$,
-        },
-        '''
-
-        config_code = '''
-    config = {
-        type: 'bar',
-        data: {
-            datasets: data,
-            labels
-        },
-        options: {
-        plugins: {
-            title: {
-            display: true,
-            text: '$title$ - in $timeunit$'
-            },
-        },
-        responsive: true,
-        interaction: {
-            intersect: false,
-        },
-        }
-    };
-    '''
-
-        data, largest_time_unit = get_rand_latency_data()
-        labels_code = labels_code.replace('$labels$', format(data['labels']))
-        f.write(labels_code)
-        data.pop('labels')
-        f.write('\ndata = [')
-        for fs in data.keys():
-            f.write(
-                dataset_code.replace('$label$', fs)
-                .replace('$data$', format(data[fs]))
-                .replace('$color$', format(chart_colors[list(data.keys()).index(fs)]))
-            )
-        f.write('\n]\n')
-
-        title = 'Random Read Latency'
-        f.write(
-            config_code.replace('$title$', title).replace(
-                '$timeunit$', largest_time_unit
-            )
-        )
-
-        f.write('\nChart.defaults.borderColor = "#eee"\n')
-        f.write('Chart.defaults.color = "#eee";\n')
-        f.write('ctx = document.getElementById("rand_read_latency_chart");\n')
-        f.write('new Chart(ctx, config);\n')
-
-
-def get_seq_read_data() -> tuple:
-    # format: { 'labels': ['btrfs'], 'btrfs': [9, 8, 4, 6]}
-    datasets = {'labels': []}
-    with open('assets/benchmarking-dwarfs/data/benchmark-data.csv', 'rt') as f:
-        for line in csv.reader(f):
-            fs = HelperFunctions.get_fs(line[0])
-            label = HelperFunctions.get_label(line[1])
-            datasets['labels'].append(label) if label not in datasets[
-                'labels'
-            ] else False
-            try:
-                datasets[fs].append(line[2])
-            except KeyError:
-                datasets[fs] = []
-                datasets[fs].append(line[2])
+                data[fs] = []
+                data[fs].append(line[single_files_index])
 
     # NOTE: this will break if the bulk data contains a larger unit than the single file data, but that's unlikely to happen so I'm not gonna deal with it
     # and it's a bit broken regardless but whatever
     largest_time_unit = 'ns'
-    for key in datasets.keys():
+    for key in data.keys():
         if key == 'labels':
             continue
-        for item in datasets[key]:
+        for item in data[key]:
             if largest_time_unit == 's':
                 break
             if item.endswith('ms'):
@@ -394,21 +89,21 @@ def get_seq_read_data() -> tuple:
                 largest_time_unit = 's'
                 break
 
-    for key in datasets.keys():
+    for key in data.keys():
         if key == 'labels':
             continue
-        for i in range(len(datasets[key])):
-            datasets[key][i] = HelperFunctions.convert_time(
-                datasets[key][i], largest_time_unit
+        for i in range(len(data[key])):
+            data[key][i] = HelperFunctions.convert_time(
+                data[key][i], largest_time_unit
             )
 
     with open('assets/benchmarking-dwarfs/data/bulk.csv', 'rt') as f:
         for line in csv.reader(f):
-            if line[2] != 'bulk_sequential_read':
+            if line[2] != bulk_test_name:
                 continue
             fs = HelperFunctions.get_fs(line[0])
             label = HelperFunctions.get_label(line[1])
-            datasets['labels'].append(label) if label not in datasets[
+            data['labels'].append(label) if label not in data[
                 'labels'
             ] else False
 
@@ -432,13 +127,13 @@ def get_seq_read_data() -> tuple:
             for i in range(len(line[3:])):
                 line[i + 3] = HelperFunctions.convert_time(item, largest_time_unit)
 
-            datasets[fs].append(sum(line[3:]) / len(line[3:]))
+            data[fs].append(sum(line[3:]) / len(line[3:]))
 
-        return (datasets, largest_time_unit)
+        return (data, largest_time_unit)
 
 
-def seq_read():
-    with open('assets/benchmarking-dwarfs/js/seq_read.js', 'wt') as f:
+def run(single_files_index: int, bulk_test_name: str, filename: str, title: str, chart_canvas_id: str):
+    with open(f'assets/benchmarking-dwarfs/js/{filename}', 'wt') as f:
         # from https://github.com/chartjs/Chart.js/blob/master/docs/scripts/utils.js (CHART_COLORS)
         # modified so similar color aren't adjacent
         chart_colors = [
@@ -482,7 +177,7 @@ def seq_read():
     };
     '''
 
-        data, largest_time_unit = get_seq_read_data()
+        data, largest_time_unit = get_data(single_files_index, bulk_test_name)
         labels_code = labels_code.replace('$labels$', format(data['labels']))
         f.write(labels_code)
         data.pop('labels')
@@ -495,7 +190,6 @@ def seq_read():
             )
         f.write('\n]\n')
 
-        title = 'Sequential Read Times'
         f.write(
             config_code.replace('$title$', title).replace(
                 '$timeunit$', largest_time_unit
@@ -504,167 +198,22 @@ def seq_read():
 
         f.write('\nChart.defaults.borderColor = "#eee"\n')
         f.write('Chart.defaults.color = "#eee";\n')
-        f.write('ctx = document.getElementById("seq_read_chart");\n')
+        f.write(f'ctx = document.getElementById("{chart_canvas_id}");\n')
         f.write('new Chart(ctx, config);\n')
 
-
-def get_rand_read_data() -> tuple:
-    # format: { 'labels': ['btrfs'], 'btrfs': [9, 8, 4, 6]}
-    datasets = {'labels': []}
-    with open('assets/benchmarking-dwarfs/data/benchmark-data.csv', 'rt') as f:
-        for line in csv.reader(f):
-            fs = HelperFunctions.get_fs(line[0])
-            label = HelperFunctions.get_label(line[1])
-            datasets['labels'].append(label) if label not in datasets[
-                'labels'
-            ] else False
-            try:
-                datasets[fs].append(line[3])
-            except KeyError:
-                datasets[fs] = []
-                datasets[fs].append(line[3])
-
-    # NOTE: this will break if the bulk data contains a larger unit than the single file data, but that's unlikely to happen so I'm not gonna deal with it
-    # and it's a bit broken regardless but whatever
-    largest_time_unit = 'ns'
-    for key in datasets.keys():
-        if key == 'labels':
-            continue
-        for item in datasets[key]:
-            if largest_time_unit == 's':
-                break
-            if item.endswith('ms'):
-                largest_time_unit = 'ms'
-            elif item.endswith('µs') and largest_time_unit != 'ms':
-                largest_time_unit = 'µs'
-            elif (
-                item.endswith('ns')
-                and largest_time_unit != 'ms'
-                and largest_time_unit != 'µs'
-            ):
-                largest_time_unit = 'ns'
-            elif re.sub('[0-9\\.]', '', item) == 's':
-                largest_time_unit = 's'
-                break
-
-    for key in datasets.keys():
-        if key == 'labels':
-            continue
-        for i in range(len(datasets[key])):
-            datasets[key][i] = HelperFunctions.convert_time(
-                datasets[key][i], largest_time_unit
-            )
-
-    with open('assets/benchmarking-dwarfs/data/bulk.csv', 'rt') as f:
-        for line in csv.reader(f):
-            if line[2] != 'bulk_random_read':
-                continue
-            fs = HelperFunctions.get_fs(line[0])
-            label = HelperFunctions.get_label(line[1])
-            datasets['labels'].append(label) if label not in datasets[
-                'labels'
-            ] else False
-
-            for item in line[3:]:
-                if largest_time_unit == 's':
-                    break
-                if item.endswith('ms'):
-                    largest_time_unit = 'ms'
-                elif item.endswith('µs') and largest_time_unit != 'ms':
-                    largest_time_unit = 'µs'
-                elif (
-                    item.endswith('ns')
-                    and largest_time_unit != 'ms'
-                    and largest_time_unit != 'µs'
-                ):
-                    largest_time_unit = 'ns'
-                elif re.sub('[0-9]\\.', '', item) == 's':
-                    largest_time_unit = 's'
-                    break
-
-            for i in range(len(line[3:])):
-                line[i + 3] = HelperFunctions.convert_time(item, largest_time_unit)
-
-            datasets[fs].append(sum(line[3:]) / len(line[3:]))
-
-        return (datasets, largest_time_unit)
-
-
-def rand_read():
-    with open('assets/benchmarking-dwarfs/js/rand_read.js', 'wt') as f:
-        # from https://github.com/chartjs/Chart.js/blob/master/docs/scripts/utils.js (CHART_COLORS)
-        # modified so similar color aren't adjacent
-        chart_colors = [
-            "'rgb(255, 99, 132)'",  # red
-            "'rgb(75, 192, 192)'",  # green
-            "'rgb(54, 162, 235)'",  # blue
-            "'rgb(255, 159, 64)'",  # orange
-            "'rgb(153, 102, 255)'",  # purple
-            "'rgb(255, 205, 86)'",  # yellow
-            "'rgb(201, 203, 207)'",  # grey
-        ]
-
-        labels_code = 'labels = $labels$'
-        dataset_code = '''
-        {
-        label: '$label$',
-        data: $data$,
-        backgroundColor: $color$,
-        },
-        '''
-
-        config_code = '''
-    config = {
-        type: 'bar',
-        data: {
-            datasets: data,
-            labels
-        },
-        options: {
-        plugins: {
-            title: {
-            display: true,
-            text: '$title$ - in $timeunit$'
-            },
-        },
-        responsive: true,
-        interaction: {
-            intersect: false,
-        },
-        }
-    };
-    '''
-
-        data, largest_time_unit = get_rand_read_data()
-        labels_code = labels_code.replace('$labels$', format(data['labels']))
-        f.write(labels_code)
-        data.pop('labels')
-        f.write('\ndata = [')
-        for fs in data.keys():
-            f.write(
-                dataset_code.replace('$label$', fs)
-                .replace('$data$', format(data[fs]))
-                .replace('$color$', format(chart_colors[list(data.keys()).index(fs)]))
-            )
-        f.write('\n]\n')
-
-        title = 'Random Read Times'
-        f.write(
-            config_code.replace('$title$', title).replace(
-                '$timeunit$', largest_time_unit
-            )
-        )
-
-        f.write('\nChart.defaults.borderColor = "#eee"\n')
-        f.write('Chart.defaults.color = "#eee";\n')
-        f.write('ctx = document.getElementById("rand_read_chart");\n')
-        f.write('new Chart(ctx, config);\n')
-
+def declare_vars():
+    with open('assets/benchmarking-dwarfs/js/declare_vars.js', 'wt') as f:
+        f.write('let labels;\n')
+        f.write('let config;\n')
+        f.write('let data;\n')
+        f.write('let ctx;\n')
 
 if __name__ == '__main__':
     # NOTE: this code is absolutely horrible and all these functions (except declare_vars) should be one function that just takes the title, chart canvas id, filename, test name in bulk, and index in singles
+    # and what function to get data from, if that's possible
     # i will repent to the DRY gods someday
-    seq_read()
-    rand_read()
-    seq_latency()
-    rand_latency()
+    declare_vars()
+    run(2, 'bulk_sequential_read', 'seq_read.js', 'Sequential Read Times', 'seq_read_chart')
+    run(3, 'bulk_random_read', 'rand_read.js', 'Random Read Times', 'rand_read_chart')
+    run(4, 'bulk_sequential_read_latency', 'seq_latency.js', 'Sequential Read Latency', 'seq_read_latency_chart')
+    run(5, 'bulk_random_read_latency', 'rand_latency.js', 'Random Read Latency', 'rand_read_latency_chart')

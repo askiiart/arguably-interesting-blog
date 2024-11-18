@@ -2,19 +2,19 @@ labels = ['Null 25 GiB file', 'Random 25 GiB file', '100 million-sided polygon d
 data = [
         {
         label: 'DwarFS',
-        data: [351.30788, 3513.96, 480.97789, 0.882576, 0.000811, 0.000661],
+        data: [0.35130788, 3.51396, 0.48097789, 0.0008825759999999999, 1.333e-06, 1.242e-06],
         backgroundColor: 'rgb(255, 99, 132)',
         },
         
         {
         label: 'fuse-archive (tar)',
-        data: [0.0, 0.0, 0.0, 0.0, 0.000652, 0.000772],
+        data: [0.0, 0.0, 0.0, 0.0, 1.4119999999999998e-06, 2.144e-06],
         backgroundColor: 'rgb(75, 192, 192)',
         },
         
         {
         label: 'Btrfs',
-        data: [5.51523, 91.13626, 94.05722, 0.949771, 0.000741, 0.0007509999999999999],
+        data: [0.00551523, 0.09113626, 0.09405722, 0.0009497709999999999, 9.82e-07, 1.242e-06],
         backgroundColor: 'rgb(54, 162, 235)',
         },
         
@@ -30,7 +30,7 @@ data = [
         plugins: {
             title: {
             display: true,
-            text: 'Random Read Latency - in ms'
+            text: 'Random Read Latency - in s'
             },
         },
         responsive: true,
