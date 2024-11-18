@@ -3,7 +3,7 @@ import csv
 import re
 
 
-# a bunch of horrible code to make the chart.js code
+# a bunch of now-less-horrible code to make the chart.js code
 
 
 class HelperFunctions:
@@ -209,9 +209,6 @@ def declare_vars():
         f.write('let ctx;\n')
 
 if __name__ == '__main__':
-    # NOTE: this code is absolutely horrible and all these functions (except declare_vars) should be one function that just takes the title, chart canvas id, filename, test name in bulk, and index in singles
-    # and what function to get data from, if that's possible
-    # i will repent to the DRY gods someday
     declare_vars()
     run(2, 'bulk_sequential_read', 'seq_read.js', 'Sequential Read Times', 'seq_read_chart')
     run(3, 'bulk_random_read', 'rand_read.js', 'Random Read Times', 'rand_read_chart')
