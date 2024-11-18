@@ -59,7 +59,17 @@ After processing [the data](/assets/benchmarking-dwarfs/data/) with [this script
 
 ### Sequential read
 
+<div>
+  <canvas id="seq_read_chart" class="chart"></canvas>
+</div>
+
+
 ### Random read
+
+<div>
+  <canvas id="rand_read_chart" class="chart"></canvas>
+</div>
+
 
 ### Sequential read latency
 
@@ -68,6 +78,11 @@ After processing [the data](/assets/benchmarking-dwarfs/data/) with [this script
 </div>
 
 ### Random read latency
+
+<div>
+  <canvas id="rand_read_latency_chart" class="chart"></canvas>
+</div>
+
 
 The FUSE-based filesystems run into a bit of trouble here - with incompressible data, DwarFS has a hard time keeping up for some reason, despite keeping up just fine with larger random reads on the same data, and so it takes 3 to 4 seconds to run random read latency testing on the 25 GiB random file. Meanwhile, when testing random read latency in `fuse-archive` pretty much just dies, becoming ridiculously slow (even compared to DwarFS), so I didn't test its random read latency at all and just had its results put as 0 milliseconds.
 
@@ -98,4 +113,8 @@ The FUSE-based filesystems run into a bit of trouble here - with incompressible 
 
 <!-- JavaScript for graphs goes hereeeeeee -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/assets/benchmarking-dwarfs/js/declare_vars.js"></script>
+<script src="/assets/benchmarking-dwarfs/js/seq_read.js"></script>
+<script src="/assets/benchmarking-dwarfs/js/rand_read.js"></script>
 <script src="/assets/benchmarking-dwarfs/js/seq_latency.js"></script>
+<script src="/assets/benchmarking-dwarfs/js/rand_latency.js"></script>
