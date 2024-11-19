@@ -34,7 +34,8 @@ body {
 }
 
 li {
-    font: 18px/1.35 'Atkinson Hyperlegible', sans-serif;}
+    font: 18px/1.35 'Atkinson Hyperlegible', sans-serif;
+}
 
 p,
 footer {
@@ -81,27 +82,11 @@ code {
 .force-word-wrap pre code {
     white-space: normal;
     word-wrap: break-word;
- }
- 
-@media (max-device-width: 1200px) {
-    h1 {
-            line-height: 1.2;
-            font-size: 40px;
-    }
-
-    h2 {
-            line-height: 1.2;
-            font-size: 30px;
-    }
-
-    body {
-            font-size: 20px;
-    }
 }
 
 @media print {
     body {
-            max-width: none
+        max-width: none
     }
 }
 
@@ -120,7 +105,26 @@ img {
 }
 
 .chart {
-    min-width: 600px;
-    max-width: 50vw;
-    max-height: 50vh; 
+    max-width: 80vw;
+    max-height: 60vh;
+}
+
+@media (max-device-width: 1200px) {
+    h1 {
+        line-height: 1.2;
+        font-size: 40px;
+    }
+
+    h2 {
+        line-height: 1.2;
+        font-size: 30px;
+    }
+
+    body {
+        font-size: 20px;
+    }
+
+    .chart {
+        max-width: 95vw;
+    }
 }
