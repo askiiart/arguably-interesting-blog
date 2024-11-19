@@ -22,7 +22,7 @@ I'll be benchmarking DwarFS, fuse-archive (with tar files), and btrfs. In some e
 
 During said early testing, I also ran into the fact that most compressed archives, like Gzip-compressed tar archives, also took far too long to *create*, because Gzip is single-threaded. So all the options with no chance of being used have been marked off, and I'll only be looking into these three.
 
-DwarFS also took far too long to create on its default setting, but on compression level 1, it's much faster - 11m2.738s for the ~80 GiB total, and considering
+DwarFS also took far too long to create an archive on its default setting, but on compression level 1, it's much faster - 11m2.738s for the ~80 GiB total, and considering my entire system is about 20 GiB, that should be about 2-3 minutes, which is reasonable.
 
 ## Running the benchmark
 
@@ -63,13 +63,11 @@ After processing [the data](/assets/benchmarking-dwarfs/data/) with [this script
   <canvas id="seq_read_chart" class="chart"></canvas>
 </div>
 
-
 ### Random read
 
 <div>
   <canvas id="rand_read_chart" class="chart"></canvas>
 </div>
-
 
 ### Sequential read latency
 
@@ -82,7 +80,6 @@ After processing [the data](/assets/benchmarking-dwarfs/data/) with [this script
 <div>
   <canvas id="rand_read_latency_chart" class="chart"></canvas>
 </div>
-
 
 The FUSE-based filesystems run into a bit of trouble here - with incompressible data, DwarFS has a hard time keeping up for some reason, despite keeping up just fine with larger random reads on the same data, and so it takes 3 to 4 seconds to run random read latency testing on the 25 GiB random file. Meanwhile, when testing random read latency in `fuse-archive` pretty much just dies, becoming ridiculously slow (even compared to DwarFS), so I didn't test its random read latency at all and just had its results put as 0 milliseconds.
 
