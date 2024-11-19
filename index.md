@@ -8,3 +8,4 @@ This is a site! Doing... stuff, with computers. Interesting and sometimes funny 
 - [OCI Images as a "Filesystem": Vanilla OS](/blog/vanilla-os.html)
 - [Building blendOS (and its packages)](/blog/building-blendos.html)
 - [Using Clap](/blog/using-clap.html)
+- [Benchmarking Dwarfs](/blog/benchmarking-dwarfs.html)
