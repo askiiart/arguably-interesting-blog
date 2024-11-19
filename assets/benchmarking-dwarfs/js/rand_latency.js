@@ -7,15 +7,9 @@ data = [
         },
         
         {
-        label: 'fuse-archive (tar)',
-        data: [0.0, 0.0, 0.0, 0.0, 1.4119999999999998e-06, 2.144e-06],
-        backgroundColor: 'rgb(75, 192, 192)',
-        },
-        
-        {
         label: 'Btrfs',
         data: [0.00551523, 0.09113626, 0.09405722, 0.0009497709999999999, 9.82e-07, 1.242e-06],
-        backgroundColor: 'rgb(54, 162, 235)',
+        backgroundColor: 'rgb(75, 192, 192)',
         },
         
 ]

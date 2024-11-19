@@ -51,11 +51,16 @@ class HelperFunctions:
         return float(time)
 
 def get_data(single_files_index: int, bulk_test_name: str):
+    skip_fuse_archive_tar = False
+    if bulk_test_name == 'bulk_random_read_latency':
+        skip_fuse_archive_tar = True
     # format: { 'labels': ['btrfs'], 'btrfs': [9, 8, 4, 6]}
     data = {'labels': []}
     with open('assets/benchmarking-dwarfs/data/benchmark-data.csv', 'rt') as f:
         for line in csv.reader(f):
             fs = HelperFunctions.get_fs(line[0])
+            if fs == 'fuse-archive (tar)' and skip_fuse_archive_tar:
+                continue
             label = HelperFunctions.get_label(line[1])
             data['labels'].append(label) if label not in data[
                 'labels'
@@ -108,6 +113,7 @@ def get_data(single_files_index: int, bulk_test_name: str):
             ] else False
 
             for item in line[3:]:
+                # FIXME: this breaks if the bulk time is a larger unit than the single file time
                 if largest_time_unit == 's':
                     break
                 if item.endswith('ms'):
@@ -123,11 +129,21 @@ def get_data(single_files_index: int, bulk_test_name: str):
                 elif re.sub('[0-9]\\.', '', item) == 's':
                     largest_time_unit = 's'
                     break
+            
+            # on the single file tests fuse-archive fails, and it's so small is shows as 0 here anyways, so might as well skip it
+            if fs == 'fuse-archive (tar)' and largest_time_unit == 's' and skip_fuse_archive_tar:
+                continue
 
             for i in range(len(line[3:])):
                 line[i + 3] = HelperFunctions.convert_time(item, largest_time_unit)
 
-            data[fs].append(sum(line[3:]) / len(line[3:]))
+            try:
+                data[fs].append(sum(line[3:]) / len(line[3:]))
+            except KeyError:
+                data[fs] = [0, 0, 0, 0]
+                data[fs].append(sum(line[3:]) / len(line[3:]))
+
+            
 
         return (data, largest_time_unit)
 
